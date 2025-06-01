@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Outline&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 10s linear infinite;
+}
+
+.animate-marquee-slow {
+    display: inline-block;
+    animation: marquee 40s linear infinite;
+}
+
+.font-londrina-outline {
+    font-family: "Londrina Outline", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.font-roboto {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+}
+
+@theme {
+    /* colors */
+    --color-primary: #ecebeb;
+    --color-secondary: #00346b;
+    --color-secondary-red: #b91f32;
+
+    /* fonts */
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-poppins: Poppins, sans-serif;
+    --font-londrina-outline: 'Londrina Outline', cursive;
+    --font-roboto: 'Roboto', sans-serif;
+}
