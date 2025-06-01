@@ -38,9 +38,9 @@
 
 @theme {
     /* colors */
-    --color-primary: #ecebeb;
-    --color-secondary: #00346b;
-    --color-secondary-red: #b91f32;
+    --color-primary: #ffc845;
+    --color-secondary: #efeeea;
+    --color-tertiary: #f5f5f5;
 
     /* fonts */
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
