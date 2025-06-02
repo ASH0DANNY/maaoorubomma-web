@@ -51,14 +51,14 @@ export const LocationSelector = () => {
                 onClick={() => setIsLocationPopupOpen(true)}
                 className="flex items-center text-sm text-gray-700 hover:text-gray-900 transition-colors"
             >
-                <div className="flex flex-col items-start mr-1">
-                    <span className="text-xs text-gray-500">Deliver To</span>
+                <div className="flex flex-col items-start">
+                    <span className="text-xs text-gray-500 hidden lg:block">Deliver To</span>
                     <div className="flex items-center">
-                        <LocationOnIcon className="h-4 w-4 text-gray-500 mr-1" fontSize='small' />
+                        <LocationOnIcon className="h-4 w-4 text-gray-500 mr-0 lg:mr-1" fontSize='small' />
                         <span className="font-medium text-xs">{displayCode}</span>
                     </div>
                 </div>
-                <ArrowDropDownIcon className="h-4 w-4 text-gray-700" />
+                <ArrowDropDownIcon className="h-4 w-4 text-gray-700 hidden lg:block" />
             </button>
 
             {/* Location Popup Modal */}

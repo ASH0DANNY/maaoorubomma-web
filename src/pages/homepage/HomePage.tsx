@@ -435,7 +435,7 @@ const HomePage = () => {
                         <input
                             type="email"
                             placeholder="Enter your email"
-                            className="flex-1 px-4 py-3 rounded-full text-black focus:outline-none focus:ring-2 focus:ring-white"
+                            className="flex-1 px-4 py-3 rounded-full text-gray-500 focus:text-gray-100 ring-2 ring-gray-700 focus:outline-none focus:ring-2 focus:ring-white"
                         />
                         <button className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                             Subscribe

@@ -17,8 +17,9 @@ export default function Footer() {
 
     return (
         <footer className="bg-gray-900 text-white">
+
             {/* Newsletter Section */}
-            <div className="bg-gray-800 py-8">
+            {/* <div className="bg-gray-800 py-8">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="text-center md:text-left">
@@ -37,7 +38,7 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Main Footer Content */}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
