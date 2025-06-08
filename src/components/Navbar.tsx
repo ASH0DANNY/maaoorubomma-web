@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { LocationSelector } from './LocationSelector'
+import { MaaoorubommaLogoBase64 } from '../utils/Base64'
 
 export const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -79,7 +80,7 @@ export const Navbar = () => {
                             <Link to="/" className="block">
                                 <img
                                     className="h-8 sm:h-10 lg:h-12 w-auto"
-                                    src="/src/assets/Maaoorubomma Logo Final Logo/Maaoorubomma Logo.png"
+                                    src={MaaoorubommaLogoBase64}
                                     alt="Maaoorubomma"
                                 />
                             </Link>
@@ -211,7 +212,7 @@ export const Navbar = () => {
                             <div className="flex items-center">
                                 <img
                                     className="h-8 w-auto mr-3"
-                                    src="/src/assets/Maaoorubomma Logo Final Logo/Maaoorubomma Logo.png"
+                                    src={MaaoorubommaLogoBase64}
                                     alt="Maaoorubomma"
                                 />
                                 <span className="text-lg font-medium text-gray-900">Menu</span>

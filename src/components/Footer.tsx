@@ -11,6 +11,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+import { MaaoorubommaLogoWhiteBase64 } from '../utils/Base64';
 
 export default function Footer() {
     const mainCategories = categories.slice(0, 4); // Get first 4 main categories
@@ -46,7 +47,7 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div>
                         <img
-                            src="/src/assets/Maaoorubomma Logo Final Logo/Maaoorubomma Logo white.png"
+                            src={MaaoorubommaLogoWhiteBase64}
                             alt="Maaoorubomma"
                             className="h-12 w-auto mb-6"
                         />
