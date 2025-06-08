@@ -20,7 +20,7 @@ export const LocationSelector = () => {
     const handleDetectLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+                () => {
                     // In a real app, you'd reverse geocode these coordinates
                     setCurrentLocation('Current Location');
                     setIsLocationPopupOpen(false);
