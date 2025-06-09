@@ -1,334 +1,348 @@
 // Color variant interface
 export interface ProductColor {
-    name: string;
-    value: string; // Hex color code or color name
-    available: boolean;
+  name: string;
+  value: string; // Hex color code or color name
+  available: boolean;
 }
 
 // Size variant interface
 export interface ProductSize {
-    name: string;
-    value: string; // Size measurement or description
-    available: boolean;
+  name: string;
+  value: string; // Size measurement or description
+  available: boolean;
 }
 
 // Product specifications interface
 export interface ProductSpecifications {
-    [key: string]: string; // Flexible key-value pairs for specifications
+  [key: string]: string; // Flexible key-value pairs for specifications
 }
 
 // Product dimensions interface
 export interface ProductDimensions {
-    length: number;
-    width: number;
-    height: number;
-    unit: 'cm' | 'inches' | 'mm';
+  length: number;
+  width: number;
+  height: number;
+  unit: "cm" | "inches" | "mm";
 }
 
 // Product weight interface
 export interface ProductWeight {
-    value: number;
-    unit: 'g' | 'kg' | 'lb' | 'oz';
+  value: number;
+  unit: "g" | "kg" | "lb" | "oz";
 }
 
 // Review interface
 export interface ProductReview {
-    id: string;
-    userId: string;
-    userName: string;
-    rating: number; // 1-5 stars
-    title?: string;
-    comment: string;
-    date: Date;
-    verified: boolean; // Verified purchase
-    helpful: number; // Number of helpful votes
-    images?: string[]; // Review images
+  id: string;
+  userId: string;
+  userName: string;
+  rating: number; // 1-5 stars
+  title?: string;
+  comment: string;
+  date: Date;
+  verified: boolean; // Verified purchase
+  helpful: number; // Number of helpful votes
+  images?: string[]; // Review images
 }
 
 // Category interface (simplified for product reference)
 export interface ProductCategory {
-    id: string;
-    name: string;
-    path: string;
+  id: string;
+  name: string;
+  path: string;
 }
 
 // Brand interface
 export interface ProductBrand {
-    id: string;
-    name: string;
-    logo?: string;
-    description?: string;
+  id: string;
+  name: string;
+  logo?: string;
+  description?: string;
 }
 
 // Inventory interface
 export interface ProductInventory {
-    inStock: number;
-    reserved: number;
-    available: number;
-    lowStockThreshold: number;
-    restockDate?: Date;
+  inStock: number;
+  reserved: number;
+  available: number;
+  lowStockThreshold: number;
+  restockDate?: Date;
 }
 
 // SEO interface
 export interface ProductSEO {
-    metaTitle?: string;
-    metaDescription?: string;
-    keywords?: string[];
-    canonicalUrl?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  canonicalUrl?: string;
 }
 
 // Shipping information interface
 export interface ProductShipping {
-    weight: ProductWeight;
-    dimensions: ProductDimensions;
-    shippingClass?: string;
-    freeShipping: boolean;
-    expeditedShipping: boolean;
+  weight: ProductWeight;
+  dimensions: ProductDimensions;
+  shippingClass?: string;
+  freeShipping: boolean;
+  expeditedShipping: boolean;
 }
 
 // Pricing interface
 export interface ProductPricing {
-    price: number;
-    originalPrice?: number;
-    currency: string;
-    discount?: number; // Percentage
-    salePrice?: number;
-    priceValidUntil?: Date;
-    taxIncluded: boolean;
+  price: number;
+  originalPrice?: number;
+  currency: string;
+  discount?: number; // Percentage
+  salePrice?: number;
+  priceValidUntil?: Date;
+  taxIncluded: boolean;
 }
 
 // Main Product interface
 export interface Product {
-    // Basic Information
-    id: string;
-    name: string;
-    slug: string;
-    sku: string;
-    description: string;
-    shortDescription?: string;
+  // Basic Information
+  id: string;
+  name: string;
+  slug: string;
+  sku: string;
+  description: string;
+  shortDescription?: string;
 
-    // Media
-    images: string[];
-    videos?: string[];
-    thumbnail?: string;
+  // Media
+  images: string[];
+  videos?: string[];
+  thumbnail?: string;
 
-    // Pricing
-    pricing: ProductPricing;
+  // Pricing
+  pricing: ProductPricing;
 
-    // Variants
-    colors?: ProductColor[];
-    sizes?: ProductSize[];
-    variants?: ProductVariant[]; // For complex variants
+  // Variants
+  colors?: ProductColor[];
+  sizes?: ProductSize[];
+  variants?: ProductVariant[]; // For complex variants
 
-    // Inventory
-    inventory: ProductInventory;
+  // Inventory
+  inventory: ProductInventory;
 
-    // Classification
-    category: ProductCategory;
-    subCategory?: ProductCategory;
-    brand: ProductBrand;
-    tags?: string[];
+  // Classification
+  category: ProductCategory;
+  subCategory?: ProductCategory;
+  brand: ProductBrand;
+  tags?: string[];
 
-    // Product Details
-    material?: string;
-    features: string[];
-    specifications: ProductSpecifications;
+  // Product Details
+  material?: string;
+  features: string[];
+  specifications: ProductSpecifications;
 
-    // Physical Properties
-    weight: ProductWeight;
-    dimensions: ProductDimensions;
+  // Physical Properties
+  weight: ProductWeight;
+  dimensions: ProductDimensions;
 
-    // Reviews and Ratings
-    rating: number; // Average rating
-    reviewCount: number;
-    reviews?: ProductReview[];
+  // Reviews and Ratings
+  rating: number; // Average rating
+  reviewCount: number;
+  reviews?: ProductReview[];
 
-    // Status and Visibility
-    status: 'active' | 'inactive' | 'draft' | 'discontinued';
-    featured: boolean;
-    newProduct: boolean;
-    bestSeller: boolean;
+  // Status and Visibility
+  status: "active" | "inactive" | "draft" | "discontinued";
+  featured: boolean;
+  newProduct: boolean;
+  bestSeller: boolean;
 
-    // Shipping
-    shipping: ProductShipping;
+  // Shipping
+  shipping: ProductShipping;
 
-    // SEO
-    seo?: ProductSEO;
+  // SEO
+  seo?: ProductSEO;
 
-    // Timestamps
-    createdAt: Date;
-    updatedAt: Date;
-    publishedAt?: Date;
+  // Timestamps
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt?: Date;
 
-    // Additional Properties
-    origin?: string; // Country/region of origin
-    artisan?: string; // For handcrafted items
-    careInstructions?: string[];
-    warranty?: string;
-    returnPolicy?: string;
+  // Additional Properties
+  origin?: string; // Country/region of origin
+  artisan?: string; // For handcrafted items
+  careInstructions?: string[];
+  warranty?: string;
+  returnPolicy?: string;
 
-    // Related Products
-    relatedProducts?: string[]; // Product IDs
-    crossSellProducts?: string[]; // Product IDs
-    upSellProducts?: string[]; // Product IDs
+  // Related Products
+  relatedProducts?: string[]; // Product IDs
+  crossSellProducts?: string[]; // Product IDs
+  upSellProducts?: string[]; // Product IDs
 }
 
 // Product variant interface for complex products
 export interface ProductVariant {
-    id: string;
-    sku: string;
-    name: string;
-    price: number;
-    originalPrice?: number;
-    inventory: number;
-    attributes: {
-        color?: string;
-        size?: string;
-        material?: string;
-        [key: string]: string | undefined;
-    };
-    images: string[];
-    available: boolean;
+  id: string;
+  sku: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  inventory: number;
+  attributes: {
+    color?: string;
+    size?: string;
+    material?: string;
+    [key: string]: string | undefined;
+  };
+  images: string[];
+  available: boolean;
 }
 
 // Cart item interface
 export interface CartItem {
-    productId: string;
-    variantId?: string;
-    quantity: number;
-    selectedColor?: string;
-    selectedSize?: string;
-    price: number;
-    totalPrice: number;
+  productId: string;
+  variantId?: string;
+  quantity: number;
+  selectedColor?: string;
+  selectedSize?: string;
+  price: number;
+  totalPrice: number;
 }
 
 // Wishlist item interface
 export interface WishlistItem {
-    productId: string;
-    addedAt: Date;
+  productId: string;
+  addedAt: Date;
 }
 
 // Product filter interface
 export interface ProductFilter {
-    category?: string[];
-    brand?: string[];
-    priceRange?: {
-        min: number;
-        max: number;
-    };
-    rating?: number;
-    inStock?: boolean;
-    colors?: string[];
-    sizes?: string[];
-    materials?: string[];
-    features?: string[];
-    sortBy?: 'price_low' | 'price_high' | 'rating' | 'newest' | 'best_seller' | 'name';
+  category?: string[];
+  brand?: string[];
+  priceRange?: {
+    min: number;
+    max: number;
+  };
+  rating?: number;
+  inStock?: boolean;
+  colors?: string[];
+  sizes?: string[];
+  materials?: string[];
+  features?: string[];
+  sortBy?:
+    | "price_low"
+    | "price_high"
+    | "rating"
+    | "newest"
+    | "best_seller"
+    | "name";
 }
 
 // Product search result interface
 export interface ProductSearchResult {
-    products: Product[];
-    totalCount: number;
-    currentPage: number;
-    totalPages: number;
-    filters: ProductFilter;
+  products: Product[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  filters: ProductFilter;
 }
 
 // Product availability status
 export type ProductAvailability =
-    | 'in_stock'
-    | 'low_stock'
-    | 'out_of_stock'
-    | 'pre_order'
-    | 'discontinued';
+  | "in_stock"
+  | "low_stock"
+  | "out_of_stock"
+  | "pre_order"
+  | "discontinued";
 
 // Product condition for used/vintage items
 export type ProductCondition =
-    | 'new'
-    | 'like_new'
-    | 'very_good'
-    | 'good'
-    | 'fair'
-    | 'vintage';
+  | "new"
+  | "like_new"
+  | "very_good"
+  | "good"
+  | "fair"
+  | "vintage";
 
 // Example usage and helper functions
 export const createEmptyProduct = (): Partial<Product> => ({
-    id: '',
-    name: '',
-    slug: '',
-    sku: '',
-    description: '',
-    images: [],
-    pricing: {
-        price: 0,
-        currency: 'INR',
-        taxIncluded: true
-    },
-    inventory: {
-        inStock: 0,
-        reserved: 0,
-        available: 0,
-        lowStockThreshold: 5
-    },
-    category: {
-        id: '',
-        name: '',
-        path: ''
-    },
-    brand: {
-        id: '',
-        name: ''
-    },
-    features: [],
-    specifications: {},
-    weight: {
-        value: 0,
-        unit: 'g'
-    },
-    dimensions: {
-        length: 0,
-        width: 0,
-        height: 0,
-        unit: 'cm'
-    },
-    rating: 0,
-    reviewCount: 0,
-    status: 'draft',
-    featured: false,
-    newProduct: false,
-    bestSeller: false,
-    shipping: {
-        weight: { value: 0, unit: 'g' },
-        dimensions: { length: 0, width: 0, height: 0, unit: 'cm' },
-        freeShipping: false,
-        expeditedShipping: false
-    },
-    createdAt: new Date(),
-    updatedAt: new Date()
+  id: "",
+  name: "",
+  slug: "",
+  sku: "",
+  description: "",
+  images: [],
+  pricing: {
+    price: 0,
+    currency: "INR",
+    taxIncluded: true,
+  },
+  inventory: {
+    inStock: 0,
+    reserved: 0,
+    available: 0,
+    lowStockThreshold: 5,
+  },
+  category: {
+    id: "",
+    name: "",
+    path: "",
+  },
+  brand: {
+    id: "",
+    name: "",
+  },
+  features: [],
+  specifications: {},
+  weight: {
+    value: 0,
+    unit: "g",
+  },
+  dimensions: {
+    length: 0,
+    width: 0,
+    height: 0,
+    unit: "cm",
+  },
+  rating: 0,
+  reviewCount: 0,
+  status: "draft",
+  featured: false,
+  newProduct: false,
+  bestSeller: false,
+  shipping: {
+    weight: { value: 0, unit: "g" },
+    dimensions: { length: 0, width: 0, height: 0, unit: "cm" },
+    freeShipping: false,
+    expeditedShipping: false,
+  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
 });
 
 // Helper function to check product availability
-export const getProductAvailability = (product: Product): ProductAvailability => {
-    if (product.inventory.available <= 0) {
-        return product.status === 'discontinued' ? 'discontinued' : 'out_of_stock';
-    }
-    if (product.inventory.available <= product.inventory.lowStockThreshold) {
-        return 'low_stock';
-    }
-    return 'in_stock';
+export const getProductAvailability = (
+  product: Product
+): ProductAvailability => {
+  if (product.inventory.available <= 0) {
+    return product.status === "discontinued" ? "discontinued" : "out_of_stock";
+  }
+  if (product.inventory.available <= product.inventory.lowStockThreshold) {
+    return "low_stock";
+  }
+  return "in_stock";
 };
 
 // Helper function to calculate discount percentage
-export const calculateDiscount = (originalPrice: number, currentPrice: number): number => {
-    if (!originalPrice || originalPrice <= currentPrice) return 0;
-    return Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+export const calculateDiscount = (
+  originalPrice: number,
+  currentPrice: number
+): number => {
+  if (!originalPrice || originalPrice <= currentPrice) return 0;
+  return Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 };
 
 // Helper function to format price
-export const formatPrice = (price: number, currency: string = 'INR'): string => {
-    return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: currency,
-        minimumFractionDigits: 0
-    }).format(price);
+export const formatPrice = (
+  price: number,
+  currency: string = "INR"
+): string => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: currency,
+    minimumFractionDigits: 0,
+  }).format(price);
 };

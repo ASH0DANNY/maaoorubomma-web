@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useLocation, popularLocations } from '../context/LocationContext';
@@ -54,7 +54,7 @@ export const LocationSelector = () => {
                 <div className="flex flex-col items-start">
                     <span className="text-xs text-gray-500 hidden lg:block">Deliver To</span>
                     <div className="flex items-center">
-                        <LocationOnIcon className="h-4 w-4 text-gray-500 mr-0 lg:mr-1" fontSize='small' />
+                        <LocationOnOutlinedIcon className="h-4 w-4 text-gray-500 mr-0 lg:mr-1" fontSize='small' />
                         <span className="font-medium text-xs">{displayCode}</span>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ export const LocationSelector = () => {
                         <div className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6">
                             <div>
                                 <div className="text-center">
-                                    <LocationOnIcon className="mx-auto h-12 w-12 text-blue-600" />
+                                    <LocationOnOutlinedIcon className="mx-auto h-12 w-12 text-blue-600" />
                                     <h3 className="mt-2 text-lg font-medium leading-6 text-gray-900">
                                         Choose your location
                                     </h3>
