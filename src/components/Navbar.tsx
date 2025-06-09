@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { categories } from "../types/category";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import PersonIcon from "@mui/icons-material/Person";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,13 +24,13 @@ export const Navbar = () => {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     } else {
-      navigate('/search');
+      navigate("/search");
     }
     setIsMobileMenuOpen(false);
   };
 
   const handleSearchFocus = () => {
-    navigate('/search');
+    navigate("/search");
     setIsMobileMenuOpen(false);
   };
 
@@ -139,8 +139,6 @@ export const Navbar = () => {
                 <form onSubmit={handleSearch} className="relative">
                   <input
                     type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={handleSearchFocus}
                     placeholder="Search for products..."
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -152,10 +150,7 @@ export const Navbar = () => {
               </div>
             </div>
 
-            <Link
-              to="/#"
-              className="p-1 lg:p-2 text-black hover:text-gray-400"
-            >
+            <Link to="/#" className="p-1 lg:p-2 text-black hover:text-gray-400">
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
             </Link>
 
@@ -163,7 +158,7 @@ export const Navbar = () => {
               to="/#"
               className="p-1 lg:p-2 text-black hover:text-gray-400 hidden lg:block"
             >
-              <PersonIcon className="h-6 w-6" />
+              <PersonOutlineOutlinedIcon className="h-6 w-6" />
             </Link>
 
             <Link
@@ -198,15 +193,9 @@ export const Navbar = () => {
               <form onSubmit={handleSearch} className="relative">
                 <input
                   type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
                   placeholder="Search for products..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch(e);
-                    }
-                  }}
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -420,7 +409,7 @@ export const Navbar = () => {
                   onClick={closeMobileMenu}
                   className="flex items-center px-2 py-2 text-base text-gray-700 hover:bg-gray-50 rounded-md"
                 >
-                  <PersonIcon className="h-5 w-5 mr-3 text-gray-400" />
+                  <PersonOutlineOutlinedIcon className="h-5 w-5 mr-3 text-gray-400" />
                   Login / Register
                 </Link>
 
