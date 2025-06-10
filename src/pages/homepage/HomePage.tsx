@@ -10,7 +10,6 @@ import {
 } from "@mui/icons-material";
 import { ProductCard } from "../../components/ProductCard";
 import { categoryProducts } from "../../data/categoryProducts";
-import type { Product } from "../../types/product";
 
 const heroSlides = [
   {

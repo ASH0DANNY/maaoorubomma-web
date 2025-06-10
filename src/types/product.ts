@@ -1,23 +1,19 @@
-// Color variant interface
 export interface ProductColor {
   name: string;
-  value: string; // Hex color code or color name
+  value: string;
   available: boolean;
 }
 
-// Size variant interface
 export interface ProductSize {
   name: string;
-  value: string; // Size measurement or description
+  value: string;
   available: boolean;
 }
 
-// Product specifications interface
 export interface ProductSpecifications {
   [key: string]: string; // Flexible key-value pairs for specifications
 }
 
-// Product dimensions interface
 export interface ProductDimensions {
   length: number;
   width: number;
@@ -25,13 +21,11 @@ export interface ProductDimensions {
   unit: "cm" | "inches" | "mm";
 }
 
-// Product weight interface
 export interface ProductWeight {
   value: number;
   unit: "g" | "kg" | "lb" | "oz";
 }
 
-// Review interface
 export interface ProductReview {
   id: string;
   userId: string;
@@ -45,14 +39,14 @@ export interface ProductReview {
   images?: string[]; // Review images
 }
 
-// Category interface (simplified for product reference)
 export interface ProductCategory {
   id: string;
   name: string;
   path: string;
+  thumbnail?: string;
 }
 
-// Brand interface
+
 export interface ProductBrand {
   id: string;
   name: string;
@@ -60,7 +54,6 @@ export interface ProductBrand {
   description?: string;
 }
 
-// Inventory interface
 export interface ProductInventory {
   inStock: number;
   reserved: number;
@@ -69,7 +62,6 @@ export interface ProductInventory {
   restockDate?: Date;
 }
 
-// SEO interface
 export interface ProductSEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -77,7 +69,6 @@ export interface ProductSEO {
   canonicalUrl?: string;
 }
 
-// Shipping information interface
 export interface ProductShipping {
   weight: ProductWeight;
   dimensions: ProductDimensions;
@@ -86,7 +77,6 @@ export interface ProductShipping {
   expeditedShipping: boolean;
 }
 
-// Pricing interface
 export interface ProductPricing {
   price: number;
   originalPrice?: number;
@@ -97,7 +87,6 @@ export interface ProductPricing {
   taxIncluded: boolean;
 }
 
-// Main Product interface
 export interface Product {
   // Basic Information
   id: string;
@@ -173,7 +162,6 @@ export interface Product {
   upSellProducts?: string[]; // Product IDs
 }
 
-// Product variant interface for complex products
 export interface ProductVariant {
   id: string;
   sku: string;
@@ -191,7 +179,6 @@ export interface ProductVariant {
   available: boolean;
 }
 
-// Cart item interface
 export interface CartItem {
   productId: string;
   variantId?: string;
@@ -202,13 +189,11 @@ export interface CartItem {
   totalPrice: number;
 }
 
-// Wishlist item interface
 export interface WishlistItem {
   productId: string;
   addedAt: Date;
 }
 
-// Product filter interface
 export interface ProductFilter {
   category?: string[];
   brand?: string[];
@@ -231,7 +216,6 @@ export interface ProductFilter {
     | "name";
 }
 
-// Product search result interface
 export interface ProductSearchResult {
   products: Product[];
   totalCount: number;
@@ -240,7 +224,6 @@ export interface ProductSearchResult {
   filters: ProductFilter;
 }
 
-// Product availability status
 export type ProductAvailability =
   | "in_stock"
   | "low_stock"
@@ -248,7 +231,6 @@ export type ProductAvailability =
   | "pre_order"
   | "discontinued";
 
-// Product condition for used/vintage items
 export type ProductCondition =
   | "new"
   | "like_new"
@@ -257,7 +239,6 @@ export type ProductCondition =
   | "fair"
   | "vintage";
 
-// Example usage and helper functions
 export const createEmptyProduct = (): Partial<Product> => ({
   id: "",
   name: "",
@@ -313,7 +294,6 @@ export const createEmptyProduct = (): Partial<Product> => ({
   updatedAt: new Date(),
 });
 
-// Helper function to check product availability
 export const getProductAvailability = (
   product: Product
 ): ProductAvailability => {
@@ -326,7 +306,6 @@ export const getProductAvailability = (
   return "in_stock";
 };
 
-// Helper function to calculate discount percentage
 export const calculateDiscount = (
   originalPrice: number,
   currentPrice: number
@@ -335,7 +314,6 @@ export const calculateDiscount = (
   return Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
 };
 
-// Helper function to format price
 export const formatPrice = (
   price: number,
   currency: string = "INR"

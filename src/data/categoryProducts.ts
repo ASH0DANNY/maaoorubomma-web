@@ -1,4 +1,5 @@
 import type { Product } from "../types/product";
+import { toyimageBase64 } from "../utils/Base64";
 
 // Helper function to create a base product
 const createBaseProduct = (
@@ -33,6 +34,7 @@ const createBaseProduct = (
     id: category,
     name: category,
     path: `/category/${category.toLowerCase().replace(/\s+/g, "-")}`,
+    thumbnail: toyimageBase64,
   },
   subCategory: {
     id: subCategory,
@@ -40,6 +42,7 @@ const createBaseProduct = (
     path: `/category/${category
       .toLowerCase()
       .replace(/\s+/g, "-")}/${subCategory.toLowerCase().replace(/\s+/g, "-")}`,
+    thumbnail: toyimageBase64,
   },
   brand: {
     id: "artisan-crafts",
