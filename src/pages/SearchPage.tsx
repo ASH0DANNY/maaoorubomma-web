@@ -111,13 +111,13 @@ export const SearchPage = () => {
   };
 
   // Format price using Intl
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      minimumFractionDigits: 0,
-    }).format(price);
-  };
+  // const formatPrice = (price: number) => {
+  //   return new Intl.NumberFormat("en-IN", {
+  //     style: "currency",
+  //     currency: "INR",
+  //     minimumFractionDigits: 0,
+  //   }).format(price);
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50">

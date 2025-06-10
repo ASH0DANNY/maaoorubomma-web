@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation, useLoaderData } from "react-router-dom";
+import { useParams, Link, useLoaderData } from "react-router-dom";
 import { categories } from "../../types/category";
 import { useState, useEffect, useRef } from "react";
 import { ChevronRight, ArrowForward, Menu, X } from "@mui/icons-material";
@@ -12,7 +12,7 @@ interface LoaderData {
 const CategoryPage = () => {
   const { categoryId, subCategoryId } = useParams();
   const { products } = useLoaderData() as LoaderData;
-  const location = useLocation();
+  // const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<
     (typeof categories)[0] | undefined
   >();
