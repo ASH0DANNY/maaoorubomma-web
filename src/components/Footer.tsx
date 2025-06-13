@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { categories } from '../types/category';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
@@ -76,9 +75,9 @@ export default function Footer() {
                         <ul className="space-y-2">
                             {mainCategories.map((category) => (
                                 <li key={category.id}>
-                                    <Link to={category.path} className="text-gray-400 hover:text-white">
+                                    <a href={category.path} className="text-gray-400 hover:text-white">
                                         {category.name}
-                                    </Link>
+                                    </a>
                                 </li>
                             ))}
                         </ul>
@@ -89,22 +88,22 @@ export default function Footer() {
                         <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
                         <ul className="space-y-2">
                             <li>
-                                <Link to="/contact" className="text-gray-400 hover:text-white">Contact Us</Link>
+                                <a href="/contact" className="text-gray-400 hover:text-white">Contact Us</a>
                             </li>
                             <li>
-                                <Link to="/shipping" className="text-gray-400 hover:text-white">Shipping Policy</Link>
+                                <a href="/shipping" className="text-gray-400 hover:text-white">Shipping Policy</a>
                             </li>
                             <li>
-                                <Link to="/returns" className="text-gray-400 hover:text-white">Returns & Exchanges</Link>
+                                <a href="/returns" className="text-gray-400 hover:text-white">Returns & Exchanges</a>
                             </li>
                             <li>
-                                <Link to="/faq" className="text-gray-400 hover:text-white">FAQ</Link>
+                                <a href="/faq" className="text-gray-400 hover:text-white">FAQ</a>
                             </li>
                             <li>
-                                <Link to="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</Link>
+                                <a href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</a>
                             </li>
                             <li>
-                                <Link to="/terms" className="text-gray-400 hover:text-white">Terms of Service</Link>
+                                <a href="/terms" className="text-gray-400 hover:text-white">Terms of Service</a>
                             </li>
                         </ul>
                     </div>
@@ -164,9 +163,9 @@ export default function Footer() {
                             © 2025 Maaoorubomma. All rights reserved.
                         </div>
                         <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm text-gray-400">
-                            <Link to="/privacy" className="hover:text-white">Privacy Policy</Link>
-                            <Link to="/terms" className="hover:text-white">Terms of Service</Link>
-                            <Link to="/sitemap" className="hover:text-white">Sitemap</Link>
+                            <a href="/privacy" className="hover:text-white">Privacy Policy</a>
+                            <a href="/terms" className="hover:text-white">Terms of Service</a>
+                            <a href="/sitemap" className="hover:text-white">Sitemap</a>
                         </div>
                     </div>
                 </div>
