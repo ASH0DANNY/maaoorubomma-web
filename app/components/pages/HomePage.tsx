@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,8 +11,8 @@ import {
   Refresh,
   Headset,
 } from "@mui/icons-material";
-import { ProductCard } from "../../components/ProductCard";
-import { categoryProducts } from "../../data/CategoryProducts";
+import { ProductCard } from "../ProductCard";
+import { categoryProducts } from "../../data/categoryProducts";
 
 const heroSlides = [
   {
@@ -99,6 +102,7 @@ const getFeaturedProducts = () => {
 export const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [featuredProducts] = useState(getFeaturedProducts());
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -116,7 +120,6 @@ export const HomePage = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
-  // Add to cart handler
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -127,10 +130,12 @@ export const HomePage = () => {
         >
           {heroSlides.map((slide) => (
             <div key={slide.id} className="min-w-full relative">
-              <img
+              <Image
                 src={slide.image}
                 alt={slide.title}
                 className="w-full h-full object-cover"
+                fill
+                priority={slide.id === 1}
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white text-center px-4">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -139,7 +144,7 @@ export const HomePage = () => {
                 <p className="text-lg md:text-xl mb-2">{slide.subtitle}</p>
                 <p className="text-base md:text-lg mb-6">{slide.description}</p>
                 <Link
-                  to="/products"
+                  href="/products"
                   className="bg-white text-black px-8 py-3 rounded-full hover:bg-gray-100 transition"
                 >
                   {slide.cta}
@@ -217,13 +222,15 @@ export const HomePage = () => {
           {categories.map((category) => (
             <Link
               key={category.id}
-              to={category.path}
+              href={category.path}
               className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition"
             >
-              <img
+              <Image
                 src={category.image}
                 alt={category.name}
                 className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
+                width={300}
+                height={300}
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 transition flex flex-col items-center justify-center text-white">
                 <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
@@ -236,4 +243,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;

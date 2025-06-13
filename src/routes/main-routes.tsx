@@ -6,7 +6,7 @@ import ProductDisplayPage from "../pages/ProductDisplayPage";
 import { SearchPage } from "../pages/SearchPage";
 import ErrorPage from "../pages/ErrorPage";
 import MainLayout from "../components/layouts/MainLayout";
-import { getProductsByCategory } from "../data/categoryProducts";
+import { getProductsByCategory } from "../data/CategoryProducts";
 
 const rootLoader: LoaderFunction = async () => {
   return null;
