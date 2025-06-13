@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   categories,
@@ -43,6 +42,11 @@ export const Navbar = () => {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLinkClick = (href: string) => {
+    router.push(href);
+    closeMobileMenu();
   };
 
   useEffect(() => {
@@ -89,15 +93,13 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white shadow-md z-50 transition-all duration-300 ${
-        isSticky ? "fixed top-0 w-full" : "relative"
-      }`}
+      className={`bg-white shadow-md z-50 transition-all duration-300 ${isSticky ? "fixed top-0 w-full" : "relative"
+        }`}
     >
       {/* Top Bar */}
       <div
-        className={`bg-primary py-2 hidden md:block ${
-          isSticky ? "md:hidden" : ""
-        }`}
+        className={`bg-primary py-2 hidden md:block ${isSticky ? "md:hidden" : ""
+          }`}
       >
         <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center text-xs text-black">
@@ -110,13 +112,13 @@ export const Navbar = () => {
               {" "}
               <Link href="/help" className="hover:text-gray-900">
                 Help
-              </Link>
-              <Link href="/track-order" className="hover:text-gray-900">
+              </button>
+              <button onClick={() => handleLinkClick("/track-order")} className="hover:text-gray-900">
                 Track Order
-              </Link>
-              <Link href="/store-locator" className="hover:text-gray-900">
+              </button>
+              <button onClick={() => handleLinkClick("/store-locator")} className="hover:text-gray-900">
                 Store Locator
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -190,9 +192,8 @@ export const Navbar = () => {
 
       {/* Mobile Search Bar - Only visible on mobile */}
       <div
-        className={`md:hidden bg-primary border-t border-gray-200 transition-all duration-300 overflow-hidden ${
-          showMobileSearch ? "max-h-16 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`md:hidden bg-primary border-t border-gray-200 transition-all duration-300 overflow-hidden ${showMobileSearch ? "max-h-16 opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="py-3">
@@ -282,9 +283,8 @@ export const Navbar = () => {
 
           {/* Side Menu */}
           <div
-            className={`fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col ${
-              isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+            className={`fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
           >
             {/* Menu Header - Fixed */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
@@ -346,8 +346,7 @@ export const Navbar = () => {
                   {categories.slice(0, 6).map((category: Category) => (
                     <Link
                       key={category.id}
-                      href={category.path}
-                      onClick={closeMobileMenu}
+                      onClick={() => handleLinkClick(category.path)}
                       className="flex flex-col items-center"
                     >
                       <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-2 hover:bg-orange-200 transition-colors">
@@ -372,15 +371,14 @@ export const Navbar = () => {
                       <span className="text-sm text-gray-700 text-center font-medium">
                         {category.title}
                       </span>
-                    </Link>
+                    </button>
                   ))}
                 </div>
 
                 {/* Explore More Categories Button */}
                 {categories.length > 6 && (
-                  <Link
-                    href="/category/home-decor"
-                    onClick={closeMobileMenu}
+                  <button
+                    onClick={() => handleLinkClick("/category/home-decor")}
                     className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors mb-4"
                   >
                     <div className="flex items-center">
@@ -448,7 +446,7 @@ export const Navbar = () => {
                 >
                   <span className="text-sm mr-3">📍</span>
                   Store Locator
-                </Link>
+                </button>
               </div>
             </div>
           </div>
