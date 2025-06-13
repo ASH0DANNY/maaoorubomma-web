@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
-  LocalShipping,
-  Security,
-  Refresh,
-  Headset,
-} from "@mui/icons-material";
-import { ProductCard } from "../ProductCard";
+  HeadphonesIcon,
+  RefreshCw,
+  Shield,
+  Truck,
+} from "lucide-react";
 import { categoryProducts } from "../../data/categoryProducts";
+import { Product } from "../../types/product";
+import { ProductCard } from "../ProductCard";
 
 const heroSlides = [
   {
@@ -94,7 +95,8 @@ const categories = [
 const getFeaturedProducts = () => {
   return categoryProducts
     .filter(
-      (product) => product.featured || product.newProduct || product.bestSeller
+      (product: Product) =>
+        product.featured || product.newProduct || product.bestSeller
     )
     .slice(0, 6); // Limit to 6 featured products
 };
@@ -171,28 +173,28 @@ export const HomePage = () => {
       <section className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex items-center space-x-4">
-            <LocalShipping className="text-4xl text-primary" />
+            <Truck className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">Free Shipping</h3>
               <p className="text-sm text-gray-600">On orders over ₹2,000</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Security className="text-4xl text-primary" />
+            <Shield className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">Secure Payments</h3>
               <p className="text-sm text-gray-600">100% secure payment</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Refresh className="text-4xl text-primary" />
+            <RefreshCw className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">Easy Returns</h3>
               <p className="text-sm text-gray-600">10 days return policy</p>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Headset className="text-4xl text-primary" />
+            <HeadphonesIcon className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">24/7 Support</h3>
               <p className="text-sm text-gray-600">Customer support</p>

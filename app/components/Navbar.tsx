@@ -1,9 +1,14 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { categories } from "@/types/category";
+import {
+  categories,
+  Category,
+  SubCategory,
+  NestedSubCategory,
+} from "../types/category";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -12,16 +17,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { LocationSelector } from "./LocationSelector";
-import { MaaoorubommaLogoBase64 } from "@/utils/Base64";
-import Image from "next/image";
+import { MaaoorubommaLogoBase64 } from "../utils/Base64";
 
-const Navbar = () => {
+export const Navbar = () => {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(true);
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -104,6 +107,7 @@ const Navbar = () => {
               <span>Easy 48-hour returns</span>
             </div>
             <div className="flex space-x-4">
+              {" "}
               <Link href="/help" className="hover:text-gray-900">
                 Help
               </Link>
@@ -123,16 +127,14 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Location */}
           <div className="flex items-center flex-shrink-0 gap-1 lg:gap-0">
+            {" "}
             <Link href="/" className="block">
-              <Image
+              <img
                 className="h-8 sm:h-10 lg:h-12 w-auto"
                 src={MaaoorubommaLogoBase64}
                 alt="Maaoorubomma"
-                width={120}
-                height={48}
               />
             </Link>
-
             {/* Separator line */}
             <div className="h-8 w-[2px] bg-gray-300 mx-4 hidden lg:block"></div>
             <LocationSelector />
@@ -147,26 +149,26 @@ const Navbar = () => {
                     type="text"
                     onFocus={handleSearchFocus}
                     placeholder="Search for products..."
-                    className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <SearchIcon className="h-5 w-5 text-gray-400" />
                   </div>
                 </form>
               </div>
-            </div>
-
-            <Link href="/#" className="p-1 lg:p-2 text-black hover:text-gray-400">
+            </div>{" "}
+            <Link
+              href="/#"
+              className="p-1 lg:p-2 text-black hover:text-gray-400"
+            >
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
             </Link>
-
             <Link
               href="/#"
               className="p-1 lg:p-2 text-black hover:text-gray-400 hidden lg:block"
             >
               <PersonOutlineOutlinedIcon className="h-6 w-6" />
             </Link>
-
             <Link
               href="/#"
               className="relative p-1 lg:p-2 text-black hover:text-gray-400"
@@ -176,7 +178,6 @@ const Navbar = () => {
                 0
               </span>
             </Link>
-
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 text-gray-400 hover:text-gray-600 lg:hidden"
@@ -199,16 +200,9 @@ const Navbar = () => {
               <form onSubmit={handleSearch} className="relative">
                 <input
                   type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
                   placeholder="Search for products..."
                   className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch(e);
-                      closeMobileMenu();
-                    }
-                  }}
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -223,7 +217,7 @@ const Navbar = () => {
       <div className="bg-white hidden lg:block border-t border-gray-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center space-x-8 py-0">
-            {categories.map((category) => (
+            {categories.map((category: Category) => (
               <div key={category.id} className="relative group">
                 <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 whitespace-nowrap">
                   {category.title}
@@ -233,35 +227,40 @@ const Navbar = () => {
                   <div className="absolute left-0 z-10 mt-0 w-screen max-w-md transform px-2 sm:px-0 lg:max-w-2xl opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
                     <div className="rounded-sm shadow-lg ring-2 ring-gray-300 ring-opacity-5 overflow-hidden">
                       <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-5 lg:grid-cols-2">
-                        {category.subCategories.map((subCategory) => (
-                          <div key={subCategory.id}>
-                            <Link
-                              href={subCategory.path}
-                              className="-m-3 p-1 flex items-start rounded-xs hover:bg-gray-50"
-                            >
-                              <div className="ml-4">
-                                <p className="text-sm font-medium text-gray-900">
-                                  {subCategory.name}
-                                </p>
-                                {subCategory.subCategories && (
-                                  <div className="mt-2 pl-2 space-y-1">
-                                    {subCategory.subCategories.map(
-                                      (nestedSubCategory) => (
-                                        <Link
-                                          key={nestedSubCategory.id}
-                                          href={nestedSubCategory.path}
-                                          className="text-sm text-gray-500 hover:text-gray-900 block"
-                                        >
-                                          {nestedSubCategory.name}
-                                        </Link>
-                                      )
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            </Link>
-                          </div>
-                        ))}
+                        {category.subCategories.map(
+                          (subCategory: SubCategory) => (
+                            <div key={subCategory.id}>
+                              {" "}
+                              <Link
+                                href={subCategory.path}
+                                className="-m-3 p-1 flex items-start rounded-xs hover:bg-gray-50"
+                              >
+                                <div className="ml-4">
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {subCategory.name}
+                                  </p>
+                                  {subCategory.subCategories && (
+                                    <div className="mt-2 pl-2 space-y-1">
+                                      {subCategory.subCategories.map(
+                                        (
+                                          nestedSubCategory: NestedSubCategory
+                                        ) => (
+                                          <Link
+                                            key={nestedSubCategory.id}
+                                            href={nestedSubCategory.path}
+                                            className="text-sm text-gray-500 hover:text-gray-900 block"
+                                          >
+                                            {nestedSubCategory.name}
+                                          </Link>
+                                        )
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </Link>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -290,12 +289,10 @@ const Navbar = () => {
             {/* Menu Header - Fixed */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center">
-                <Image
+                <img
                   className="h-8 w-auto mr-3"
                   src={MaaoorubommaLogoBase64}
                   alt="Maaoorubomma"
-                  width={90}
-                  height={32}
                 />
                 <span className="text-lg font-medium text-gray-900">Menu</span>
               </div>
@@ -346,7 +343,7 @@ const Navbar = () => {
               <div className="p-4">
                 {/* Category Grid - First 6 categories in circular buttons */}
                 <div className="grid grid-cols-3 gap-6 mb-6">
-                  {categories.slice(0, 6).map((category) => (
+                  {categories.slice(0, 6).map((category: Category) => (
                     <Link
                       key={category.id}
                       href={category.path}
@@ -405,7 +402,7 @@ const Navbar = () => {
                                         {categories.slice(6).map((category) => (
                                             <Link
                                                 key={category.id}
-                                                href={category.path}
+                                                to={category.path}
                                                 onClick={closeMobileMenu}
                                                 className="flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
                                             >
@@ -419,6 +416,7 @@ const Navbar = () => {
 
               {/* Menu Footer - User Actions */}
               <div className="border-t border-gray-200 p-4 space-y-3">
+                {" "}
                 <Link
                   href="/account"
                   onClick={closeMobileMenu}
@@ -427,7 +425,6 @@ const Navbar = () => {
                   <PersonOutlineOutlinedIcon className="h-5 w-5 mr-3 text-gray-400" />
                   Login / Register
                 </Link>
-
                 <Link
                   href="/track-order"
                   onClick={closeMobileMenu}
@@ -436,7 +433,6 @@ const Navbar = () => {
                   <span className="text-sm mr-3">📦</span>
                   Track Your Order
                 </Link>
-
                 <Link
                   href="/help"
                   onClick={closeMobileMenu}
@@ -445,7 +441,6 @@ const Navbar = () => {
                   <span className="text-sm mr-3">❓</span>
                   Contact Us
                 </Link>
-
                 <Link
                   href="/store-locator"
                   onClick={closeMobileMenu}
@@ -462,5 +457,3 @@ const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;
