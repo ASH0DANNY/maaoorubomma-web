@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Star, Heart, Share2, ShoppingCart, Plus, Minus, Truck, Shield, RotateCcw, Award } from "lucide-react";
-import type { Product } from "@/types/product";
+import type { Product } from "../../types/product";
 
 interface ProductDisplayPageProps {
   product: Product;
@@ -51,15 +51,14 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                   />
                 </div>
                 <div className="grid grid-cols-4 gap-4">
-                  {product.images.map((image, index) => (
+                  {product.images.map((image: string, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square rounded-lg overflow-hidden border-2 ${
-                        selectedImage === index
-                          ? "border-blue-500"
-                          : "border-transparent"
-                      }`}
+                      className={`relative aspect-square rounded-lg overflow-hidden border-2 ${selectedImage === index
+                        ? "border-blue-500"
+                        : "border-transparent"
+                        }`}
                     >
                       <Image
                         src={image}
@@ -88,11 +87,10 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                     {[...Array(5)].map((_, index) => (
                       <Star
                         key={index}
-                        className={`h-5 w-5 ${
-                          index < Math.floor(product.rating)
-                            ? "text-yellow-400 fill-current"
-                            : "text-gray-300"
-                        }`}
+                        className={`h-5 w-5 ${index < Math.floor(product.rating)
+                          ? "text-yellow-400 fill-current"
+                          : "text-gray-300"
+                          }`}
                       />
                     ))}
                   </div>
@@ -117,7 +115,7 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                         ((product.pricing.originalPrice -
                           product.pricing.price) /
                           product.pricing.originalPrice) *
-                          100
+                        100
                       )}
                       % OFF
                     </span>
@@ -131,15 +129,14 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                       Color
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {product.colors.map((color) => (
+                      {product.colors.map((color: any) => (
                         <button
                           key={color.code}
                           onClick={() => setSelectedColor(color.code)}
-                          className={`w-8 h-8 rounded-full border-2 ${
-                            selectedColor === color.code
-                              ? "ring-2 ring-blue-500"
-                              : ""
-                          }`}
+                          className={`w-8 h-8 rounded-full border-2 ${selectedColor === color.code
+                            ? "ring-2 ring-blue-500"
+                            : ""
+                            }`}
                           style={{ backgroundColor: color.code }}
                           title={color.name}
                         />
@@ -155,19 +152,17 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                       Size
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {product.sizes.map((size) => (
+                      {product.sizes.map((size: any) => (
                         <button
                           key={size.code}
                           onClick={() => setSelectedSize(size.code)}
-                          className={`px-3 py-1 rounded-md border ${
-                            selectedSize === size.code
-                              ? "border-blue-500 bg-blue-50 text-blue-600"
-                              : "border-gray-300 hover:border-gray-400"
-                          } ${
-                            size.available
+                          className={`px-3 py-1 rounded-md border ${selectedSize === size.code
+                            ? "border-blue-500 bg-blue-50 text-blue-600"
+                            : "border-gray-300 hover:border-gray-400"
+                            } ${size.available
                               ? "text-gray-900"
                               : "text-gray-400 cursor-not-allowed"
-                          }`}
+                            }`}
                           disabled={!size.available}
                         >
                           {size.name}
@@ -201,7 +196,7 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                       </button>
                     </div>
                     <span className="text-sm text-gray-500">
-                      {product.stock} items available
+                      {product.inventory?.available ?? 0} items available
                     </span>
                   </div>
                 </div>
@@ -263,11 +258,10 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
-                      className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                        activeTab === tab
-                          ? "border-blue-500 text-blue-600"
-                          : "border-transparent text-gray-500 hover:text-gray-700"
-                      }`}
+                      className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab
+                        ? "border-blue-500 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700"
+                        }`}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
@@ -286,7 +280,7 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                         Key Features:
                       </h4>
                       <ul className="list-disc list-inside space-y-2 text-gray-700">
-                        {product.features.map((feature, index) => (
+                        {product.features.map((feature: string, index: number) => (
                           <li key={index}>{feature}</li>
                         ))}
                       </ul>
@@ -296,25 +290,13 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
 
                 {activeTab === "specifications" && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    {product.specifications.map((spec, index) => (
+                    {product.specifications && Object.entries(product.specifications).map(([key, value], index) => (
                       <div key={index}>
-                        <h4 className="font-medium text-gray-900 mb-3">
-                          {spec.name}:
-                        </h4>
+                        <h4 className="font-medium text-gray-900 mb-3">{key}:</h4>
                         <ul className="space-y-2">
-                          {spec.items.map((item, itemIndex) => (
-                            <li
-                              key={itemIndex}
-                              className="flex justify-between py-2 border-b border-gray-100 text-sm"
-                            >
-                              <span className="text-gray-600">
-                                {item.name}
-                              </span>
-                              <span className="text-gray-900">
-                                {item.value}
-                              </span>
-                            </li>
-                          ))}
+                          <li className="flex justify-between py-2 border-b border-gray-100 text-sm">
+                            <span className="text-gray-900">{String(value)}</span>
+                          </li>
                         </ul>
                       </div>
                     ))}

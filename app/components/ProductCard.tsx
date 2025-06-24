@@ -23,29 +23,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow ${
-        isGridView ? "p-4" : "p-4 flex gap-4"
-      }`}
+      className={`bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow ${isGridView ? "p-4" : "p-4 flex gap-4"
+        }`}
     >
       <Link
-        href={`/product/${product.id}`}
+        href={`/product/${product.slug}`}
         className={isGridView ? "" : "flex-shrink-0"}
       >
         <img
           src={product.images[0]}
           alt={product.name}
-          className={`rounded-lg object-cover ${
-            isGridView ? "w-full h-48" : "w-24 h-24"
-          }`}
+          className={`rounded-lg object-cover ${isGridView ? "w-full h-48" : "w-24 h-24"
+            }`}
         />
       </Link>
 
       <div className={`${isGridView ? "mt-4" : "flex-1"}`}>
-        <Link href={`/product/${product.id}`}>
+        <Link href={`/product/${product.slug}`}>
           <h3
-            className={`font-medium text-gray-900 hover:text-blue-600 ${
-              isGridView ? "text-sm" : "text-base"
-            }`}
+            className={`font-medium text-gray-900 hover:text-blue-600 ${isGridView ? "text-sm" : "text-base"
+              }`}
           >
             {product.name}
           </h3>
@@ -56,11 +53,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {[...Array(5)].map((_, idx) => (
               <span
                 key={idx}
-                className={`w-4 h-4 ${
-                  idx < Math.floor(product.rating)
-                    ? "text-yellow-400"
-                    : "text-gray-300"
-                }`}
+                className={`w-4 h-4 ${idx < Math.floor(product.rating)
+                  ? "text-yellow-400"
+                  : "text-gray-300"
+                  }`}
               >
                 ★
               </span>
@@ -83,7 +79,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span className="ml-2 text-sm text-green-600">
                 {Math.round(
                   (1 - product.pricing.price / product.pricing.originalPrice) *
-                    100
+                  100
                 )}
                 % OFF
               </span>

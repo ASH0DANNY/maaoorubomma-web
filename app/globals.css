@@ -23,8 +23,3 @@
     display: inline-block;
     animation: marquee 15s linear infinite;
 }
-
-:root {
-    --color-primary: 255 255 255;
-    --color-background: 249 250 251;
-}

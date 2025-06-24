@@ -111,12 +111,12 @@ export const Navbar = () => {
               <Link href="/help" className="hover:text-gray-900">
                 Help
               </Link>
-              <button onClick={() => handleLinkClick("/track-order")} className="hover:text-gray-900">
+              <Link href="/track-order" className="hover:text-gray-900">
                 Track Order
-              </button>
-              <button onClick={() => handleLinkClick("/store-locator")} className="hover:text-gray-900">
+              </Link>
+              <Link href="/store-locator" className="hover:text-gray-900">
                 Store Locator
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -158,19 +158,19 @@ export const Navbar = () => {
               </div>
             </div>{" "}
             <Link
-              href="/#"
+              href="/wishlist"
               className="p-1 lg:p-2 text-black hover:text-primary"
             >
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
             </Link>
             <Link
-              href="/#"
+              href="/account"
               className="p-1 lg:p-2 text-black hover:text-primary hidden lg:block"
             >
               <PersonOutlineOutlinedIcon className="h-6 w-6" />
             </Link>
             <Link
-              href="/#"
+              href="/cart"
               className="relative p-1 lg:p-2 text-black hover:text-primary"
             >
               <ShoppingCartOutlinedIcon className="h-6 w-6" />
@@ -218,47 +218,41 @@ export const Navbar = () => {
           <div className="flex justify-center space-x-8 py-0">
             {categories.map((category: Category) => (
               <div key={category.id} className="relative group">
-                <button className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 whitespace-nowrap">
+                <Link href={category.path} className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 whitespace-nowrap">
                   {category.title}
-                </button>
+                </Link>
 
                 {category.subCategories && (
                   <div className="absolute left-0 z-10 mt-0 w-screen max-w-md transform px-2 sm:px-0 lg:max-w-2xl opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
                     <div className="rounded-sm shadow-lg ring-2 ring-gray-300 ring-opacity-5 overflow-hidden">
                       <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-5 lg:grid-cols-2">
-                        {category.subCategories.map(
-                          (subCategory: Category) => (
-                            <div key={subCategory.id}>
-                              {" "}
-                              <Link
-                                href={subCategory.path}
-                                className="-m-3 p-1 flex items-start rounded-xs hover:bg-gray-50"
-                              >
-                                <div className="ml-4">
-                                  <p className="text-sm font-medium text-gray-900">
-                                    {subCategory.name}
-                                  </p>
-                                  {subCategory.subCategories && (
-                                    <div className="mt-2 pl-2 space-y-1">
-                                      {subCategory.subCategories.map(
-                                        (nestedSubCategory: Category
-                                        ) => (
-                                          <Link
-                                            key={nestedSubCategory.id}
-                                            href={nestedSubCategory.path}
-                                            className="text-sm text-gray-500 hover:text-gray-900 block"
-                                          >
-                                            {nestedSubCategory.name}
-                                          </Link>
-                                        )
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              </Link>
-                            </div>
-                          )
-                        )}
+                        {category.subCategories.map((subCategory: Category) => (
+                          <div key={subCategory.id}>
+                            <Link
+                              href={subCategory.path}
+                              className="-m-3 p-1 flex items-start rounded-xs hover:bg-gray-50"
+                            >
+                              <div className="ml-4">
+                                <p className="text-sm font-medium text-gray-900">
+                                  {subCategory.name}
+                                </p>
+                                {subCategory.subCategories && (
+                                  <div className="mt-2 pl-2 space-y-1">
+                                    {subCategory.subCategories.map((nestedSubCategory: Category) => (
+                                      <Link
+                                        key={nestedSubCategory.id}
+                                        href={nestedSubCategory.path}
+                                        className="text-sm text-gray-500 hover:text-gray-900 block"
+                                      >
+                                        {nestedSubCategory.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </Link>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -271,7 +265,7 @@ export const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity lg:hidden">
+        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity lg:hidden">
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
@@ -345,9 +339,9 @@ export const Navbar = () => {
                       key={category.id}
                       onClick={() => handleLinkClick(category.path)}
                       className="flex flex-col items-center"
+                      type="button"
                     >
                       <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-2 hover:bg-orange-200 transition-colors">
-                        {/* Placeholder for category image - you can replace with actual images */}
                         <span className="text-2xl">
                           {category.id === "bedding" && "🛏️"}
                           {category.id === "furnishings" && "🪑"}

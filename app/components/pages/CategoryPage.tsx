@@ -3,17 +3,18 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, ArrowForward, Menu, X } from "@mui/icons-material";
+import { ChevronRight, ArrowForward, Menu } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import { categories } from "@/app/types/category";
 import { Product } from "@/app/types/product";
+import { usePathname } from "next/navigation";
 
 interface CategoryPageProps {
   products: Product[];
 }
 
 const CategoryPage = ({ products }: CategoryPageProps) => {
-  // Use useParams() to get categoryId and subCategoryId from Next.js Router
-  const pathname = window.location.pathname;
+  const pathname = usePathname();
   const paths = pathname.split('/').filter(Boolean);
   const categoryId = paths[1];
   const subCategoryId = paths[2];
@@ -110,8 +111,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                 <Link
                   href={activeCategory.path}
                   className={`${!subCategoryId
-                      ? "text-gray-900 font-medium"
-                      : "text-gray-600 hover:text-gray-900"
+                    ? "text-gray-900 font-medium"
+                    : "text-gray-600 hover:text-gray-900"
                     }`}
                 >
                   {activeCategory.name}
@@ -130,9 +131,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+
           {/* Mobile Sidebar Overlay */}
           {isMobileSidebarOpen && (
-            <div className="lg:hidden fixed inset-0 z-50 flex">
+            <div className="lg:hidden fixed inset-0 z-60 flex">
               {/* Backdrop */}
               <div
                 className="fixed inset-0 bg-black bg-opacity-50"
@@ -150,7 +152,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                     onClick={toggleMobileSidebar}
                     className="p-2 rounded-lg hover:bg-gray-100"
                   >
-                    <X className="h-5 w-5 text-gray-500" />
+                    {/* <span className="h-5 w-5 text-gray-500">X</span> */}
+                    <CloseIcon className="h-5 w-5" />
                   </button>
                 </div>
 
@@ -161,8 +164,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                         href={category.path}
                         onClick={() => handleCategoryClick(category)}
                         className={`group w-full text-left flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 ${activeCategory?.id === category.id
-                            ? "bg-blue-50 text-blue-700 shadow-sm"
-                            : "text-gray-700 hover:bg-gray-50"
+                          ? "bg-blue-50 text-blue-700 shadow-sm"
+                          : "text-gray-700 hover:bg-gray-50"
                           }`}
                       >
                         <div className="relative flex-shrink-0">
@@ -190,8 +193,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                         <div className="flex-1 min-w-0">
                           <h3
                             className={`text-sm font-medium truncate ${activeCategory?.id === category.id
-                                ? "text-blue-700"
-                                : "text-gray-900 group-hover:text-blue-600"
+                              ? "text-blue-700"
+                              : "text-gray-900 group-hover:text-blue-600"
                               }`}
                           >
                             {category.name}
@@ -206,8 +209,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
 
                         <ChevronRight
                           className={`h-4 w-4 transition-colors duration-200 ${activeCategory?.id === category.id
-                              ? "text-blue-500"
-                              : "text-gray-400 group-hover:text-blue-500"
+                            ? "text-blue-500"
+                            : "text-gray-400 group-hover:text-blue-500"
                             }`}
                         />
                       </Link>
@@ -227,62 +230,63 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
               </h2>
               <div className="space-y-4 max-h-[500px] overflow-y-auto">
                 {categories.map((category) => (
-                  <div key={category.id}>
-                    <Link
-                      href={category.path}
-                      onClick={() => handleCategoryClick(category)}
-                      className={`group w-full text-left flex items-center space-x-4 p-3 rounded-xl transition-all duration-200 hover:shadow-md ${activeCategory?.id === category.id
-                          ? "bg-blue-50 text-blue-700 shadow-sm"
-                          : "text-gray-700 hover:bg-gray-50"
-                        }`}
-                    >
-                      <div className="relative">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                          {category.thumbnail ? (
-                            <Image
-                              src={category.thumbnail}
-                              alt={category.name}
-                              width={40}
-                              height={40}
-                              className="rounded-lg object-cover"
-                            />
-                          ) : (
-                            <span className="text-lg font-bold text-gray-500">
-                              {category.name.charAt(0)}
-                            </span>
-                          )}
-                        </div>
-                        {/* Active indicator */}
-                        {activeCategory?.id === category.id && (
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white"></div>
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      window.location.href = category.path;
+                    }}
+                    className={`group w-full text-left flex items-center space-x-4 p-3 rounded-xl transition-all duration-200 hover:shadow-md ${activeCategory?.id === category.id
+                      ? "bg-blue-50 text-blue-700 shadow-sm"
+                      : "text-gray-700 hover:bg-gray-50"
+                      }`}
+                    style={{ background: 'none', border: 'none', padding: 0, margin: 0, width: '100%', cursor: 'pointer' }}
+                  >
+                    <div className="relative">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                        {category.thumbnail ? (
+                          <Image
+                            src={category.thumbnail}
+                            alt={category.name}
+                            width={40}
+                            height={40}
+                            className="rounded-lg object-cover"
+                          />
+                        ) : (
+                          <span className="text-lg font-bold text-gray-500">
+                            {category.name.charAt(0)}
+                          </span>
                         )}
                       </div>
+                      {/* Active indicator */}
+                      {activeCategory?.id === category.id && (
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white"></div>
+                      )}
+                    </div>
 
-                      <div className="flex-1 min-w-0">
-                        <h3
-                          className={`text-sm font-medium truncate ${activeCategory?.id === category.id
-                              ? "text-blue-700"
-                              : "text-gray-900 group-hover:text-blue-600"
-                            }`}
-                        >
-                          {category.name}
-                        </h3>
-                        {category.subCategories &&
-                          category.subCategories.length > 0 && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              {category.subCategories.length} subcategories
-                            </p>
-                          )}
-                      </div>
-
-                      <ChevronRight
-                        className={`h-4 w-4 transition-colors duration-200 ${activeCategory?.id === category.id
-                            ? "text-blue-500"
-                            : "text-gray-400 group-hover:text-blue-500"
+                    <div className="flex-1 min-w-0">
+                      <h3
+                        className={`text-sm font-medium truncate ${activeCategory?.id === category.id
+                          ? "text-blue-700"
+                          : "text-gray-900 group-hover:text-blue-600"
                           }`}
-                      />
-                    </Link>
-                  </div>
+                      >
+                        {category.name}
+                      </h3>
+                      {category.subCategories &&
+                        category.subCategories.length > 0 && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            {category.subCategories.length} subcategories
+                          </p>
+                        )}
+                    </div>
+
+                    <ChevronRight
+                      className={`h-4 w-4 transition-colors duration-200 ${activeCategory?.id === category.id
+                        ? "text-blue-500"
+                        : "text-gray-400 group-hover:text-blue-500"
+                        }`}
+                    />
+                  </button>
                 ))}
               </div>
             </div>
@@ -460,8 +464,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                                   <span
                                     key={idx}
                                     className={`text-xs ${idx < Math.floor(product.rating)
-                                        ? "text-yellow-400"
-                                        : "text-gray-300"
+                                      ? "text-yellow-400"
+                                      : "text-gray-300"
                                       }`}
                                   >
                                     ★
