@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   categories,
-  Category,
-  SubCategory,
-  NestedSubCategory,
+  Category
 } from "../types/category";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -17,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { LocationSelector } from "./LocationSelector";
 import { MaaoorubommaLogoBase64 } from "../utils/Base64";
+import Link from "next/link";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -109,10 +108,9 @@ export const Navbar = () => {
               <span>Easy 48-hour returns</span>
             </div>
             <div className="flex space-x-4">
-              {" "}
               <Link href="/help" className="hover:text-gray-900">
                 Help
-              </button>
+              </Link>
               <button onClick={() => handleLinkClick("/track-order")} className="hover:text-gray-900">
                 Track Order
               </button>
@@ -151,7 +149,7 @@ export const Navbar = () => {
                     type="text"
                     onFocus={handleSearchFocus}
                     placeholder="Search for products..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -161,19 +159,19 @@ export const Navbar = () => {
             </div>{" "}
             <Link
               href="/#"
-              className="p-1 lg:p-2 text-black hover:text-gray-400"
+              className="p-1 lg:p-2 text-black hover:text-primary"
             >
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
             </Link>
             <Link
               href="/#"
-              className="p-1 lg:p-2 text-black hover:text-gray-400 hidden lg:block"
+              className="p-1 lg:p-2 text-black hover:text-primary hidden lg:block"
             >
               <PersonOutlineOutlinedIcon className="h-6 w-6" />
             </Link>
             <Link
               href="/#"
-              className="relative p-1 lg:p-2 text-black hover:text-gray-400"
+              className="relative p-1 lg:p-2 text-black hover:text-primary"
             >
               <ShoppingCartOutlinedIcon className="h-6 w-6" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -203,7 +201,7 @@ export const Navbar = () => {
                   type="text"
                   onFocus={handleSearchFocus}
                   placeholder="Search for products..."
-                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -229,7 +227,7 @@ export const Navbar = () => {
                     <div className="rounded-sm shadow-lg ring-2 ring-gray-300 ring-opacity-5 overflow-hidden">
                       <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-5 lg:grid-cols-2">
                         {category.subCategories.map(
-                          (subCategory: SubCategory) => (
+                          (subCategory: Category) => (
                             <div key={subCategory.id}>
                               {" "}
                               <Link
@@ -243,8 +241,7 @@ export const Navbar = () => {
                                   {subCategory.subCategories && (
                                     <div className="mt-2 pl-2 space-y-1">
                                       {subCategory.subCategories.map(
-                                        (
-                                          nestedSubCategory: NestedSubCategory
+                                        (nestedSubCategory: Category
                                         ) => (
                                           <Link
                                             key={nestedSubCategory.id}
@@ -309,13 +306,13 @@ export const Navbar = () => {
               {/* Search Bar */}
               <div className="p-4 border-b border-gray-100">
                 <div className="relative">
-                  <form onSubmit={handleSearch} className="relative">
+                  <form className="relative">
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search products..."
-                      className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleSearch(e);
@@ -344,7 +341,7 @@ export const Navbar = () => {
                 {/* Category Grid - First 6 categories in circular buttons */}
                 <div className="grid grid-cols-3 gap-6 mb-6">
                   {categories.slice(0, 6).map((category: Category) => (
-                    <Link
+                    <button
                       key={category.id}
                       onClick={() => handleLinkClick(category.path)}
                       className="flex flex-col items-center"
@@ -390,7 +387,7 @@ export const Navbar = () => {
                       </span>
                     </div>
                     <ArrowForwardIosIcon className="h-4 w-4 text-gray-400" />
-                  </Link>
+                  </button>
                 )}
 
                 {/* Additional Categories (if any) */}
@@ -405,7 +402,7 @@ export const Navbar = () => {
                                                 className="flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md"
                                             >
                                                 <span className="text-sm font-medium">{category.title}</span>
-                                                <ArrowForwardIosIcon className="h-3 w-3 text-gray-400" />
+                                                <LinkrrowForwardIosIcon className="h-3 w-3 text-gray-400" />
                                             </Link>
                                         ))}
                                     </div>
@@ -414,7 +411,6 @@ export const Navbar = () => {
 
               {/* Menu Footer - User Actions */}
               <div className="border-t border-gray-200 p-4 space-y-3">
-                {" "}
                 <Link
                   href="/account"
                   onClick={closeMobileMenu}
@@ -446,7 +442,7 @@ export const Navbar = () => {
                 >
                   <span className="text-sm mr-3">📍</span>
                   Store Locator
-                </button>
+                </Link>
               </div>
             </div>
           </div>

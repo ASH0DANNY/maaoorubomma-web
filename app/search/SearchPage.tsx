@@ -7,8 +7,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import GridViewIcon from "@mui/icons-material/GridView";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import type { Product } from "@/types/product";
-import { ProductCard } from "@/components/ProductCard";
+import { Product } from "@/app/types/product";
+import { ProductCard } from "../components/ProductCard";
 
 interface SearchPageProps {
   query: string;
@@ -98,7 +98,7 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -138,7 +138,7 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
                 id="sort"
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value)}
-                className="text-sm border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="text-sm border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="relevance">Relevance</option>
                 <option value="price-low">Price: Low to High</option>
@@ -152,9 +152,8 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filters - Desktop */}
           <div
-            className={`lg:block ${
-              showFilters ? "block" : "hidden"
-            } col-span-1 space-y-6`}
+            className={`lg:block ${showFilters ? "block" : "hidden"
+              } col-span-1 space-y-6`}
           >
             {/* Price Range Filter */}
             <div className="bg-white rounded-lg shadow p-4">
@@ -170,7 +169,7 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
                         priceRange[1],
                       ])
                     }
-                    className="w-20 px-2 py-1 border border-gray-300 rounded"
+                    className="w-20 px-2 py-1 border border-primary focus:ring-primary rounded"
                   />
                   <span className="text-gray-500">to</span>
                   <input
@@ -182,7 +181,7 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
                         Number(e.target.value),
                       ])
                     }
-                    className="w-20 px-2 py-1 border border-gray-300 rounded"
+                    className="w-20 px-2 py-1 border border-primary focus:ring-primary rounded"
                   />
                 </div>
               </div>
@@ -202,7 +201,7 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
                         type="checkbox"
                         checked={selectedCategories.includes(category)}
                         onChange={() => toggleCategory(category)}
-                        className="rounded text-blue-600 focus:ring-blue-500"
+                        className="rounded text-primary focus:ring-primary"
                       />
                       <span className="text-sm text-gray-700">
                         {category}

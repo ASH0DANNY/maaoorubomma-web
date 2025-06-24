@@ -1,7 +1,8 @@
 // import { SearchPage } from '@/components/pages/SearchPage'
 // import { getProductsByCategory } from '@/data/categoryProducts'
 
-import SearchPage from "../components/pages/SearchPage"
+import SearchPage from "./SearchPage"
+import { getProductsByCategory } from "../data/categoryProducts"
 
 export default async function Page({
   searchParams,

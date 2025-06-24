@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, ArrowForward, Menu, X } from "@mui/icons-material";
-import { categories } from "@/types/category";
-import type { Product } from "@/types/product";
+import { categories } from "@/app/types/category";
+import { Product } from "@/app/types/product";
 
 interface CategoryPageProps {
   products: Product[];
@@ -17,7 +17,7 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
   const paths = pathname.split('/').filter(Boolean);
   const categoryId = paths[1];
   const subCategoryId = paths[2];
-  
+
   const [activeCategory, setActiveCategory] = useState<typeof categories[0] | undefined>();
   const [selectedCategoryForSubcategories, setSelectedCategoryForSubcategories] = useState<typeof categories[0] | undefined>();
   const subcategoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -109,11 +109,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
               <li>
                 <Link
                   href={activeCategory.path}
-                  className={`${
-                    !subCategoryId
+                  className={`${!subCategoryId
                       ? "text-gray-900 font-medium"
                       : "text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   {activeCategory.name}
                 </Link>
@@ -161,11 +160,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                       <Link
                         href={category.path}
                         onClick={() => handleCategoryClick(category)}
-                        className={`group w-full text-left flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 ${
-                          activeCategory?.id === category.id
+                        className={`group w-full text-left flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 ${activeCategory?.id === category.id
                             ? "bg-blue-50 text-blue-700 shadow-sm"
                             : "text-gray-700 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="relative flex-shrink-0">
                           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
@@ -191,11 +189,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
 
                         <div className="flex-1 min-w-0">
                           <h3
-                            className={`text-sm font-medium truncate ${
-                              activeCategory?.id === category.id
+                            className={`text-sm font-medium truncate ${activeCategory?.id === category.id
                                 ? "text-blue-700"
                                 : "text-gray-900 group-hover:text-blue-600"
-                            }`}
+                              }`}
                           >
                             {category.name}
                           </h3>
@@ -208,11 +205,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                         </div>
 
                         <ChevronRight
-                          className={`h-4 w-4 transition-colors duration-200 ${
-                            activeCategory?.id === category.id
+                          className={`h-4 w-4 transition-colors duration-200 ${activeCategory?.id === category.id
                               ? "text-blue-500"
                               : "text-gray-400 group-hover:text-blue-500"
-                          }`}
+                            }`}
                         />
                       </Link>
                     </div>
@@ -235,11 +231,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                     <Link
                       href={category.path}
                       onClick={() => handleCategoryClick(category)}
-                      className={`group w-full text-left flex items-center space-x-4 p-3 rounded-xl transition-all duration-200 hover:shadow-md ${
-                        activeCategory?.id === category.id
+                      className={`group w-full text-left flex items-center space-x-4 p-3 rounded-xl transition-all duration-200 hover:shadow-md ${activeCategory?.id === category.id
                           ? "bg-blue-50 text-blue-700 shadow-sm"
                           : "text-gray-700 hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       <div className="relative">
                         <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
@@ -265,11 +260,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
 
                       <div className="flex-1 min-w-0">
                         <h3
-                          className={`text-sm font-medium truncate ${
-                            activeCategory?.id === category.id
+                          className={`text-sm font-medium truncate ${activeCategory?.id === category.id
                               ? "text-blue-700"
                               : "text-gray-900 group-hover:text-blue-600"
-                          }`}
+                            }`}
                         >
                           {category.name}
                         </h3>
@@ -282,11 +276,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                       </div>
 
                       <ChevronRight
-                        className={`h-4 w-4 transition-colors duration-200 ${
-                          activeCategory?.id === category.id
+                        className={`h-4 w-4 transition-colors duration-200 ${activeCategory?.id === category.id
                             ? "text-blue-500"
                             : "text-gray-400 group-hover:text-blue-500"
-                        }`}
+                          }`}
                       />
                     </Link>
                   </div>
@@ -308,8 +301,8 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                 {selectedCategoryForSubcategories?.name && !activeSubCategory
                   ? `Browse ${selectedCategoryForSubcategories.name} subcategories`
                   : activeSubCategory
-                  ? `Products in ${activeSubCategory.name}`
-                  : "Explore our complete category collection"}
+                    ? `Products in ${activeSubCategory.name}`
+                    : "Explore our complete category collection"}
               </p>
             </div>
 
@@ -317,7 +310,7 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
             <div className="space-y-6 lg:space-y-8">
               {/* If showing subcategories */}
               {!subCategoryId &&
-              (!activeCategory || activeCategory.subCategories) ? (
+                (!activeCategory || activeCategory.subCategories) ? (
                 <div className="space-y-6 lg:space-y-8">
                   {categories.map(
                     (category) =>
@@ -466,11 +459,10 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                                 {[...Array(5)].map((_, idx) => (
                                   <span
                                     key={idx}
-                                    className={`text-xs ${
-                                      idx < Math.floor(product.rating)
+                                    className={`text-xs ${idx < Math.floor(product.rating)
                                         ? "text-yellow-400"
                                         : "text-gray-300"
-                                    }`}
+                                      }`}
                                   >
                                     ★
                                   </span>

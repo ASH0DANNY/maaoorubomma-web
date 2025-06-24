@@ -57,18 +57,18 @@ export default function Footer() {
               and handicrafts.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white">
+              <Link href="#" className="text-gray-400 hover:text-white">
                 <InstagramIcon />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link href="#" className="text-gray-400 hover:text-white">
                 <FacebookIcon />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link href="#" className="text-gray-400 hover:text-white">
                 <TwitterIcon />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              </Link>
+              <Link href="#" className="text-gray-400 hover:text-white">
                 <YouTubeIcon />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/contact"
+                  href="#"
                   className="text-gray-400 hover:text-white"
                 >
                   Contact Us
@@ -104,7 +104,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shipping"
+                  href="#"
                   className="text-gray-400 hover:text-white"
                 >
                   Shipping Policy
@@ -112,27 +112,27 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/returns"
+                  href="#"
                   className="text-gray-400 hover:text-white"
                 >
                   Returns & Exchanges
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-gray-400 hover:text-white">
+                <Link href="#" className="text-gray-400 hover:text-white">
                   FAQ
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="#"
                   className="text-gray-400 hover:text-white"
                 >
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-gray-400 hover:text-white">
+                <Link href="#" className="text-gray-400 hover:text-white">
                   Terms of Service
                 </Link>
               </li>
@@ -154,9 +154,9 @@ export default function Footer() {
               <li className="flex items-center space-x-3">
                 <LocationOnIcon className="text-blue-400" />
                 <span className="text-gray-400">
-                  123 Crafts Street, Artisan District
+                  123 abc Street, Address District
                   <br />
-                  Hyderabad, India 500081
+                  Karnatak, India 500081
                 </span>
               </li>
             </ul>

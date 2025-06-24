@@ -8,8 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        primary: '#ffc845',
+        secondary: '#efeeea',
+        tertiary: '#f5f5f5 ',
         background: 'rgb(var(--color-background) / <alpha-value>)',
+      },
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
       },
     },
   },
