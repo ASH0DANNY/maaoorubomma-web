@@ -93,7 +93,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   if (loading) {
-    return <div className="w-full text-center py-8 text-gray-500">Loading cart...</div>;
+    return <div className="w-full text-center py-8 text-gray-500">Loading app...</div>;
   }
 
   return (

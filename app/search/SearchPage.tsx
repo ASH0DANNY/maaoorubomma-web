@@ -36,10 +36,10 @@ export const SearchPage = ({ query, products }: SearchPageProps) => {
     let sorted = [...filteredProducts];
     switch (value) {
       case "price-low":
-        sorted.sort((a, b) => a.pricing.price - b.pricing.price);
+        sorted.sort((a, b) => a.priceing.price - b.priceing.price);
         break;
       case "price-high":
-        sorted.sort((a, b) => b.pricing.price - a.pricing.price);
+        sorted.sort((a, b) => b.priceing.price - a.priceing.price);
         break;
       case "rating":
         sorted.sort((a, b) => b.rating - a.rating);
