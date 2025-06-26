@@ -4,11 +4,7 @@ import { Inter } from "next/font/google";
 // import Navbar from '@/components/Navbar'
 // import Footer from '@/components/Footer'
 import "./globals.css";
-import Footer from "./components/Footer";
-import { Navbar } from "./components/Navbar";
-import { LocationProvider } from "./context/LocationContext";
-import { CartProvider } from "./context/CartContext";
-import { WishlistProvider } from "./context/WishlistContext";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,15 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CartProvider>
-          <WishlistProvider>
-            <LocationProvider>
-              <Navbar />
-              <main style={{ padding: "20px" }}>{children}</main>
-              <Footer />
-            </LocationProvider>
-          </WishlistProvider>
-        </CartProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -607,7 +607,7 @@ export const sampleProducts: Product[] = [
         rating: 4.5,
         reviewCount: 128,
         featured: true,
-        newProduct: false,
+        newProduct: true,
         bestSeller: true,
     },
     {

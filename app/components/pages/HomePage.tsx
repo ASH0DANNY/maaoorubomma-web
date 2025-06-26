@@ -93,12 +93,15 @@ const categories = [
 
 // Get featured products from categoryProducts
 const getFeaturedProducts = () => {
-  return categoryProducts
-    .filter(
-      (product: Product) =>
-        product.featured || product.newProduct || product.bestSeller
-    )
-    .slice(0, 6); // Limit to 6 featured products
+  // Show first 6 products if no highlight flags are set
+  const highlighted = categoryProducts.filter(
+    (product: Product) =>
+      product.featured || product.newProduct || product.bestSeller
+  );
+  if (highlighted.length > 0) {
+    return highlighted.slice(0, 6);
+  }
+  return categoryProducts.slice(0, 6);
 };
 
 export const HomePage = () => {
