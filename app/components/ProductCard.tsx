@@ -18,12 +18,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   // Format price using Intl
   const formatPrice = (price: number) => {
+    if (typeof price !== "number" || isNaN(price)) return "-";
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
       minimumFractionDigits: 0,
     }).format(price);
   };
+
+  // Helper to get price from correct property
+  const getPrice = () => product.priceing?.price ?? 0;
+  const getOriginalPrice = () => product.priceing?.originalPrice;
 
   return (
     <div
@@ -52,7 +57,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               name: product.name,
               image: product.images[0],
               slug: product.slug,
-              price: product.price,
+              price: product.priceing?.price ?? 0,
               addedAt: new Date().toISOString(),
             })
         }
@@ -88,17 +93,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         <div className="mt-2">
           <span className="text-xl font-semibold text-gray-900">
-            {formatPrice(product.price)}
+            {formatPrice(getPrice())}
           </span>
-          {product.originalPrice && (
+          {getOriginalPrice() && (
             <>
               <span className="ml-2 text-sm text-gray-500 line-through">
-                {formatPrice(product.originalPrice)}
+                {formatPrice(getOriginalPrice() ?? 0)}
               </span>
               <span className="ml-2 text-sm text-green-600">
-                {Math.round(
-                  (1 - product.price / product.originalPrice) * 100
-                )}% OFF
+                {getOriginalPrice() ? Math.round(
+                  (1 - getPrice() / getOriginalPrice()!) * 100
+                ) : 0}% OFF
               </span>
             </>
           )}

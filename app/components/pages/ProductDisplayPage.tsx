@@ -33,7 +33,7 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
     });
 
     // Navigate to cart page
-    router.push('/cart');
+    // router.push('/cart');
   };
 
   const formatPrice = (price: number) => {

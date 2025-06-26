@@ -112,12 +112,11 @@ export default function CartPage() {
               </div>
             </div>
 
-            <button
-              className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700"
-              onClick={() => window.location.href = '/payment'}
-            >
-              Proceed to Checkout
-            </button>
+            <Link href="/payment" legacyBehavior>
+              <a className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 block text-center">
+                Proceed to Checkout
+              </a>
+            </Link>
           </div>
         </div>
       </div>

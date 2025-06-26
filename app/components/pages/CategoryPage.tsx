@@ -33,16 +33,29 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
 
   const [activeSubCategory, setActiveSubCategory] = useState<SubCategoryType | undefined>();
 
+  const getCategoryByPathSegment = (segment: string) => {
+    return categories.find((c) => {
+      const catPath = c.path.split("/").filter(Boolean).pop();
+      return catPath === segment;
+    });
+  };
+
+  const getSubCategoryByPathSegment = (category: typeof categories[0], segment: string) => {
+    if (!category || !category.subCategories) return undefined;
+    return category.subCategories.find((sc) => {
+      const subPath = sc.path.split("/").filter(Boolean).pop();
+      return subPath === segment;
+    });
+  };
+
   useEffect(() => {
     // Find active category and subcategory based on URL params
-    const category = categories.find((c) => c.path.includes(categoryId || ""));
+    const category = getCategoryByPathSegment(categoryId || "");
     setActiveCategory(category);
     setSelectedCategoryForSubcategories(category || categories[0]);
 
     if (category && subCategoryId) {
-      const subCategory = category.subCategories?.find((sc) =>
-        sc.path.includes(subCategoryId)
-      );
+      const subCategory = getSubCategoryByPathSegment(category, subCategoryId);
       setActiveSubCategory(subCategory as SubCategoryType | undefined);
     } else {
       setActiveSubCategory(undefined);
@@ -449,11 +462,11 @@ const CategoryPage = ({ products }: CategoryPageProps) => {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-2">
                                 <p className="text-base lg:text-lg font-bold text-gray-900">
-                                  {formatPrice(product.pricing.price)}
+                                  {formatPrice(product.priceing.price)}
                                 </p>
-                                {product.pricing.originalPrice && (
+                                {product.priceing.originalPrice && (
                                   <p className="text-xs lg:text-sm text-gray-500 line-through">
-                                    {formatPrice(product.pricing.originalPrice)}
+                                    {formatPrice(product.priceing.originalPrice)}
                                   </p>
                                 )}
                               </div>
