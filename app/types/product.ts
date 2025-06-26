@@ -125,6 +125,11 @@ export interface Product {
     // Physical Properties
     dimensions?: ProductDimensions;
     weight?: ProductWeight;
+
+    // Highlight flags
+    bestSeller?: boolean;
+    newProduct?: boolean;
+    featured?: boolean;
 }
 
 export interface ProductVariant {

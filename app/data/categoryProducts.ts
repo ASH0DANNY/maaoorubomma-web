@@ -50,6 +50,10 @@ const createBaseProduct = (
     },
     rating: 4.5,
     reviewCount: 25,
+    // highlight flags (default false)
+    bestSeller: false,
+    newProduct: false,
+    featured: false,
 });
 
 // Create products for each subcategory
@@ -602,6 +606,9 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 200, width: 180, height: 5, unit: "cm" },
         rating: 4.5,
         reviewCount: 128,
+        featured: true,
+        newProduct: false,
+        bestSeller: true,
     },
     {
         id: "sp002",

@@ -27,7 +27,7 @@ export default function CartPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Your Cart ({itemCount} items)</h1>
-      
+
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-2/3">
           {items.map((item) => (
@@ -43,20 +43,20 @@ export default function CartPage() {
                   className="object-cover rounded-md"
                 />
               </div>
-              
+
               <div className="flex-grow">
-                <Link 
+                <Link
                   href={`/product/${item.slug}`}
                   className="text-lg font-semibold hover:text-blue-600"
                 >
                   {item.name}
                 </Link>
-                
+
                 <div className="text-sm text-gray-600 mt-1">
                   {item.color && <span className="mr-2">Color: {item.color}</span>}
                   {item.size && <span>Size: {item.size}</span>}
                 </div>
-                
+
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center border rounded-md">
                     <button
@@ -73,7 +73,7 @@ export default function CartPage() {
                       +
                     </button>
                   </div>
-                  
+
                   <button
                     onClick={() => removeItem(item.productId)}
                     className="text-red-600 hover:text-red-800"
@@ -81,7 +81,7 @@ export default function CartPage() {
                     Remove
                   </button>
                 </div>
-                
+
                 <div className="mt-2 font-semibold">
                   ₹{(item.price * item.quantity).toFixed(2)}
                 </div>
@@ -89,11 +89,11 @@ export default function CartPage() {
             </div>
           ))}
         </div>
-        
+
         <div className="lg:w-1/3">
           <div className="bg-gray-50 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-            
+
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
@@ -104,17 +104,17 @@ export default function CartPage() {
                 <span>Free</span>
               </div>
             </div>
-            
+
             <div className="border-t pt-4 mb-4">
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
                 <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
-            
+
             <button
               className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700"
-              onClick={() => alert('Checkout functionality coming soon!')}
+              onClick={() => window.location.href = '/payment'}
             >
               Proceed to Checkout
             </button>
