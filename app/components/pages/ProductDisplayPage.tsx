@@ -24,7 +24,7 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
     addItem({
       productId: product.id,
       name: product.name,
-      price: product.price,
+      price: product.priceing.price,
       quantity,
       color: selectedColor || undefined,
       size: selectedSize || undefined,
@@ -112,18 +112,19 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                 {/* Price */}
                 <div className="flex items-baseline space-x-3">
                   <span className="text-3xl font-bold text-gray-900">
-                    {formatPrice(product.price)}
+                    {formatPrice(product.priceing.price)}
                   </span>
-                  {product.originalPrice && (
+                  {product.priceing.originalPrice && (
                     <span className="text-lg text-gray-500 line-through">
-                      {formatPrice(product.originalPrice)}
+                      {formatPrice(product.priceing.originalPrice)}
                     </span>
                   )}
-                  {product.originalPrice && (
+                  {product.priceing.originalPrice && (
                     <span className="text-sm text-green-600 font-medium">
                       {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
+                        ((product.priceing.originalPrice -
+                          product.priceing.price) /
+                          product.priceing.originalPrice) *
                         100
                       )}
                       % OFF

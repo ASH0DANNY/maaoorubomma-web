@@ -12,42 +12,23 @@ const createBaseProduct = (
     id,
     name,
     slug: name.toLowerCase().replace(/\s+/g, "-"),
-    sku: `${category.substring(0, 3)}-${id}`,
     description: `High-quality ${name.toLowerCase()} for your home`,
     shortDescription: `Beautiful ${name.toLowerCase()}`,
     images: [
         "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop",
     ],
-    pricing: {
+    priceing: {
         price,
         originalPrice: Math.round(price * 1.2),
         currency: "INR",
         taxIncluded: true,
     },
     inventory: {
-        inStock: 10,
-        reserved: 0,
         available: 10,
-        lowStockThreshold: 5,
+        total: 10,
     },
-    category: {
-        id: category,
-        name: category,
-        path: `/category/${category.toLowerCase().replace(/\s+/g, "-")}`,
-        thumbnail: toyimageBase64,
-    },
-    subCategory: {
-        id: subCategory,
-        name: subCategory,
-        path: `/category/${category
-            .toLowerCase()
-            .replace(/\s+/g, "-")}/${subCategory.toLowerCase().replace(/\s+/g, "-")}`,
-        thumbnail: toyimageBase64,
-    },
-    brand: {
-        id: "artisan-crafts",
-        name: "Artisan Crafts",
-    },
+    categoryId: category,
+    subCategoryId: subCategory,
     features: [
         "Handcrafted with care",
         "Premium quality materials",
@@ -69,18 +50,6 @@ const createBaseProduct = (
     },
     rating: 4.5,
     reviewCount: 25,
-    status: "active",
-    featured: false,
-    newProduct: true,
-    bestSeller: false,
-    shipping: {
-        weight: { value: 500, unit: "g" },
-        dimensions: { length: 20, width: 15, height: 10, unit: "cm" },
-        freeShipping: true,
-        expeditedShipping: true,
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
 });
 
 // Create products for each subcategory
@@ -569,16 +538,16 @@ export const getProductsByCategory = (
         const normalizedSubCategoryId = normalizePath(subCategoryId);
         return categoryProducts.filter(
             (product) =>
-                normalizePath(product.category.path).includes(normalizedCategoryId) &&
-                product.subCategory &&
-                normalizePath(product.subCategory.path).includes(
+                normalizePath(product.categoryId).includes(normalizedCategoryId) &&
+                product.subCategoryId &&
+                normalizePath(product.subCategoryId).includes(
                     normalizedSubCategoryId
                 )
         );
     }
 
     return categoryProducts.filter((product) =>
-        normalizePath(product.category.path).includes(normalizedCategoryId)
+        normalizePath(product.categoryId).includes(normalizedCategoryId)
     );
 };
 
@@ -587,7 +556,6 @@ export const sampleProducts: Product[] = [
         id: "sp001",
         name: "Premium Cotton Bedsheet Set",
         slug: "premium-cotton-bedsheet-set",
-        sku: "BED-SP001",
         description:
             "Luxurious 100% cotton bedsheet set with superior comfort and durability. Perfect for a good night's sleep.",
         shortDescription: "Premium cotton bedsheet set for ultimate comfort",
@@ -595,7 +563,7 @@ export const sampleProducts: Product[] = [
             "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=500&fit=crop",
             "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop",
         ],
-        pricing: {
+        priceing: {
             price: 2499,
             originalPrice: 3999,
             currency: "INR",
@@ -613,26 +581,11 @@ export const sampleProducts: Product[] = [
             { name: "King", value: "180x200cm", available: true },
         ],
         inventory: {
-            inStock: 45,
-            reserved: 5,
-            available: 40,
-            lowStockThreshold: 10,
+            available: 45,
+            total: 50,
         },
-        category: {
-            id: "bedding",
-            name: "Bedding",
-            path: "/category/bedding",
-        },
-        subCategory: {
-            id: "bedsheets",
-            name: "Bedsheets",
-            path: "/category/bedding/bedsheets",
-        },
-        brand: {
-            id: "comfort-home",
-            name: "Comfort Home",
-            description: "Premium home textiles brand",
-        },
+        categoryId: "bedding",
+        subCategoryId: "bedsheets",
         features: [
             "100% Pure Cotton",
             "Breathable and Soft",
@@ -649,25 +602,11 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 200, width: 180, height: 5, unit: "cm" },
         rating: 4.5,
         reviewCount: 128,
-        status: "active",
-        featured: true,
-        newProduct: false,
-        bestSeller: true,
-        shipping: {
-            weight: { value: 1200, unit: "g" },
-            dimensions: { length: 35, width: 25, height: 8, unit: "cm" },
-            freeShipping: true,
-            expeditedShipping: true,
-        },
-        tags: ["cotton", "bedding", "comfortable", "premium"],
-        createdAt: new Date("2024-01-15"),
-        updatedAt: new Date("2024-12-01"),
     },
     {
         id: "sp002",
         name: "Wooden Dining Chair",
         slug: "wooden-dining-chair",
-        sku: "FUR-SP002",
         description:
             "Elegant wooden dining chair crafted from solid oak wood. Features ergonomic design and timeless appeal.",
         shortDescription: "Solid oak wooden dining chair",
@@ -675,7 +614,7 @@ export const sampleProducts: Product[] = [
             "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=500&h=500&fit=crop",
             "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&h=500&fit=crop",
         ],
-        pricing: {
+        priceing: {
             price: 4999,
             originalPrice: 6999,
             currency: "INR",
@@ -688,26 +627,11 @@ export const sampleProducts: Product[] = [
             { name: "White Wash", value: "#F5F5F5", available: true },
         ],
         inventory: {
-            inStock: 25,
-            reserved: 3,
-            available: 22,
-            lowStockThreshold: 5,
+            available: 25,
+            total: 28,
         },
-        category: {
-            id: "furniture",
-            name: "Furniture",
-            path: "/category/furniture",
-        },
-        subCategory: {
-            id: "chairs",
-            name: "Chairs",
-            path: "/category/furniture/chairs",
-        },
-        brand: {
-            id: "woodcraft-studio",
-            name: "WoodCraft Studio",
-            description: "Handcrafted wooden furniture",
-        },
+        categoryId: "furniture",
+        subCategoryId: "chairs",
         features: [
             "Solid Oak Wood",
             "Ergonomic Design",
@@ -724,25 +648,11 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 45, width: 50, height: 85, unit: "cm" },
         rating: 4.2,
         reviewCount: 89,
-        status: "active",
-        featured: false,
-        newProduct: true,
-        bestSeller: false,
-        shipping: {
-            weight: { value: 9000, unit: "g" },
-            dimensions: { length: 55, width: 55, height: 95, unit: "cm" },
-            freeShipping: false,
-            expeditedShipping: false,
-        },
-        tags: ["wooden", "dining", "chair", "furniture", "oak"],
-        createdAt: new Date("2024-02-10"),
-        updatedAt: new Date("2024-11-28"),
     },
     {
         id: "sp003",
         name: "Smart LED Table Lamp",
         slug: "smart-led-table-lamp",
-        sku: "LIG-SP003",
         description:
             "Modern smart LED table lamp with adjustable brightness, color temperature control, and wireless charging base.",
         shortDescription: "Smart LED lamp with wireless charging",
@@ -750,7 +660,7 @@ export const sampleProducts: Product[] = [
             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop",
             "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=500&h=500&fit=crop",
         ],
-        pricing: {
+        priceing: {
             price: 3499,
             originalPrice: 4999,
             currency: "INR",
@@ -763,26 +673,11 @@ export const sampleProducts: Product[] = [
             { name: "Rose Gold", value: "#E8B4B8", available: false },
         ],
         inventory: {
-            inStock: 60,
-            reserved: 8,
-            available: 52,
-            lowStockThreshold: 15,
+            available: 60,
+            total: 68,
         },
-        category: {
-            id: "lighting",
-            name: "Lighting",
-            path: "/category/lighting",
-        },
-        subCategory: {
-            id: "table-lamps",
-            name: "Table Lamps",
-            path: "/category/lighting/table-lamps",
-        },
-        brand: {
-            id: "bright-tech",
-            name: "BrightTech",
-            description: "Smart lighting solutions",
-        },
+        categoryId: "lighting",
+        subCategoryId: "table-lamps",
         features: [
             "Wireless Charging Base",
             "Adjustable Brightness",
@@ -801,25 +696,11 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 18, width: 18, height: 42, unit: "cm" },
         rating: 4.7,
         reviewCount: 203,
-        status: "active",
-        featured: true,
-        newProduct: true,
-        bestSeller: true,
-        shipping: {
-            weight: { value: 950, unit: "g" },
-            dimensions: { length: 25, width: 25, height: 50, unit: "cm" },
-            freeShipping: true,
-            expeditedShipping: true,
-        },
-        tags: ["smart", "led", "lamp", "wireless-charging", "modern"],
-        createdAt: new Date("2024-03-05"),
-        updatedAt: new Date("2024-12-02"),
     },
     {
         id: "sp004",
         name: "Ceramic Coffee Mug Set",
         slug: "ceramic-coffee-mug-set",
-        sku: "KIT-SP004",
         description:
             "Beautiful set of 4 handcrafted ceramic coffee mugs with unique glazed finish. Perfect for your morning coffee ritual.",
         shortDescription: "Handcrafted ceramic coffee mug set of 4",
@@ -827,7 +708,7 @@ export const sampleProducts: Product[] = [
             "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=500&h=500&fit=crop",
             "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&h=500&fit=crop",
         ],
-        pricing: {
+        priceing: {
             price: 1299,
             originalPrice: 1799,
             currency: "INR",
@@ -840,26 +721,11 @@ export const sampleProducts: Product[] = [
             { name: "Sunset Orange", value: "#FF8C00", available: true },
         ],
         inventory: {
-            inStock: 35,
-            reserved: 2,
-            available: 33,
-            lowStockThreshold: 8,
+            available: 35,
+            total: 37,
         },
-        category: {
-            id: "kitchenware",
-            name: "Kitchenware",
-            path: "/category/kitchenware",
-        },
-        subCategory: {
-            id: "mugs-cups",
-            name: "Mugs & Cups",
-            path: "/category/kitchenware/mugs-cups",
-        },
-        brand: {
-            id: "artisan-pottery",
-            name: "Artisan Pottery",
-            description: "Handcrafted ceramic goods",
-        },
+        categoryId: "kitchenware",
+        subCategoryId: "mugs-cups",
         features: [
             "Set of 4 Mugs",
             "Handcrafted Ceramic",
@@ -877,25 +743,11 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 12, width: 9, height: 10, unit: "cm" },
         rating: 4.4,
         reviewCount: 67,
-        status: "active",
-        featured: false,
-        newProduct: false,
-        bestSeller: false,
-        shipping: {
-            weight: { value: 2000, unit: "g" },
-            dimensions: { length: 30, width: 20, height: 15, unit: "cm" },
-            freeShipping: true,
-            expeditedShipping: false,
-        },
-        tags: ["ceramic", "coffee", "mug", "handcrafted", "set"],
-        createdAt: new Date("2024-01-20"),
-        updatedAt: new Date("2024-11-15"),
     },
     {
         id: "sp005",
         name: "Yoga Exercise Mat",
         slug: "yoga-exercise-mat",
-        sku: "FIT-SP005",
         description:
             "Premium non-slip yoga mat made from eco-friendly TPE material. Perfect for yoga, pilates, and general fitness exercises.",
         shortDescription: "Eco-friendly non-slip yoga mat",
@@ -903,7 +755,7 @@ export const sampleProducts: Product[] = [
             "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=500&h=500&fit=crop",
             "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop",
         ],
-        pricing: {
+        priceing: {
             price: 1999,
             originalPrice: 2999,
             currency: "INR",
@@ -921,26 +773,11 @@ export const sampleProducts: Product[] = [
             { name: "Extra Long", value: "200x66cm", available: true },
         ],
         inventory: {
-            inStock: 80,
-            reserved: 10,
-            available: 70,
-            lowStockThreshold: 20,
+            available: 80,
+            total: 90,
         },
-        category: {
-            id: "fitness",
-            name: "Fitness",
-            path: "/category/fitness",
-        },
-        subCategory: {
-            id: "yoga-accessories",
-            name: "Yoga Accessories",
-            path: "/category/fitness/yoga-accessories",
-        },
-        brand: {
-            id: "zen-fitness",
-            name: "Zen Fitness",
-            description: "Mindful fitness equipment",
-        },
+        categoryId: "fitness",
+        subCategoryId: "yoga-accessories",
         features: [
             "Non-slip Surface",
             "Eco-friendly TPE Material",
@@ -959,18 +796,5 @@ export const sampleProducts: Product[] = [
         dimensions: { length: 183, width: 61, height: 0.6, unit: "cm" },
         rating: 4.6,
         reviewCount: 145,
-        status: "active",
-        featured: true,
-        newProduct: false,
-        bestSeller: true,
-        shipping: {
-            weight: { value: 1400, unit: "g" },
-            dimensions: { length: 65, width: 15, height: 15, unit: "cm" },
-            freeShipping: true,
-            expeditedShipping: true,
-        },
-        tags: ["yoga", "exercise", "mat", "fitness", "eco-friendly"],
-        createdAt: new Date("2024-02-28"),
-        updatedAt: new Date("2024-11-30"),
     },
 ];

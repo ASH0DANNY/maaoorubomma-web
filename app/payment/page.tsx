@@ -14,6 +14,13 @@ const paymentMethods = [
     { value: "upi", label: "UPI/Netbanking" },
 ];
 
+// Utility to deeply remove undefined/null fields
+function cleanObject<T extends Record<string, any>>(obj: T): T {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([, v]) => v !== undefined && v !== null)
+    ) as T;
+}
+
 export default function PaymentPage() {
     const { items, total, clearCart } = useCart();
     const { user } = useAuth();
@@ -35,25 +42,25 @@ export default function PaymentPage() {
         setPaying(true);
         setError("");
         try {
-            // Only save allowed fields for each item
-            const sanitizedItems = items.map((item) => ({
+            // Only save allowed fields for each item, remove undefined/null
+            const sanitizedItems = items.map((item) => cleanObject({
                 productId: item.productId,
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity,
                 image: item.image,
-                color: item.color || null,
-                size: item.size || null,
+                color: item.color,
+                size: item.size,
                 slug: item.slug,
             }));
             await updateDoc(doc(db, "users", user.uid), {
-                orders: arrayUnion({
+                orders: arrayUnion(cleanObject({
                     items: sanitizedItems,
                     total,
                     paymentMethod: method,
                     status: "completed",
                     createdAt: Timestamp.now(),
-                }),
+                })),
             });
             clearCart();
             router.push("/account?order=success");

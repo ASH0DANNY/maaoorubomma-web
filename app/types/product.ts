@@ -94,8 +94,7 @@ export interface Product {
     slug: string;
     description: string;
     shortDescription: string;
-    price: number;
-    originalPrice?: number;
+    priceing: ProductPricing;
 
     // Media
     images: string[];
@@ -211,7 +210,15 @@ export const createEmptyProduct = (): Partial<Product> => ({
     slug: "",
     description: "",
     shortDescription: "",
-    price: 0,
+    priceing: {
+        price: 0,
+        originalPrice: undefined,
+        currency: "INR",
+        discount: 0,
+        salePrice: undefined,
+        priceValidUntil: undefined,
+        taxIncluded: true,
+    },
     images: [],
     inventory: {
         available: 0,
