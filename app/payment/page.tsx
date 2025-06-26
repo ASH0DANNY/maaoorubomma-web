@@ -6,6 +6,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import type { CartItem } from "../types/cart";
 
 const paymentMethods = [
     { value: "cod", label: "Cash on Delivery" },
@@ -34,9 +35,20 @@ export default function PaymentPage() {
         setPaying(true);
         setError("");
         try {
+            // Only save allowed fields for each item
+            const sanitizedItems = items.map((item) => ({
+                productId: item.productId,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image,
+                color: item.color || null,
+                size: item.size || null,
+                slug: item.slug,
+            }));
             await updateDoc(doc(db, "users", user.uid), {
                 orders: arrayUnion({
-                    items,
+                    items: sanitizedItems,
                     total,
                     paymentMethod: method,
                     status: "completed",

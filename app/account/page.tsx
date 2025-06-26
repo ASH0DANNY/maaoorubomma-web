@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import type { UserAddress } from "../types/user";
+import type { UserAddress, UserOrder } from "../types/user";
+import Link from "next/link";
 
 export default function AccountPage() {
     const { user, loading, signOutUser } = useAuth();
@@ -18,6 +19,7 @@ export default function AccountPage() {
         country: "India",
         pincode: ""
     });
+    const [orders, setOrders] = useState<UserOrder[]>([]);
     const [saving, setSaving] = useState(false);
     const [success, setSuccess] = useState("");
 
@@ -26,8 +28,13 @@ export default function AccountPage() {
             const fetchAddress = async () => {
                 const ref = doc(db, "users", user.uid);
                 const snap = await getDoc(ref);
-                if (snap.exists() && snap.data().address) {
-                    setAddress((prev) => ({ ...prev, ...snap.data().address } as UserAddress));
+                if (snap.exists()) {
+                    if (snap.data().address) {
+                        setAddress((prev) => ({ ...prev, ...snap.data().address }));
+                    }
+                    if (snap.data().orders) {
+                        setOrders(snap.data().orders);
+                    }
                 }
             };
             fetchAddress();
@@ -65,6 +72,7 @@ export default function AccountPage() {
                 <div className="font-medium">Email:</div>
                 <div>{user.email}</div>
             </div>
+            <Link href="/wishlist" className="block w-full mb-6 bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 text-center font-semibold">Go to Wishlist</Link>
             <form onSubmit={handleSave} className="space-y-4 mt-6">
                 <h3 className="font-semibold mb-2">Shipping Address</h3>
                 <input
@@ -124,6 +132,23 @@ export default function AccountPage() {
                 </button>
                 {success && <div className="text-green-600 text-center">{success}</div>}
             </form>
+            <div className="mt-8">
+                <h3 className="font-semibold mb-2">Your Orders</h3>
+                {orders.length === 0 ? (
+                    <div className="text-gray-500">No orders yet.</div>
+                ) : (
+                    <ul className="space-y-4">
+                        {orders.map((order, idx) => (
+                            <li key={idx} className="border rounded p-3">
+                                <div className="font-medium mb-1">Order #{orders.length - idx}</div>
+                                <div className="text-sm text-gray-600 mb-1">{order.items.length} items | ₹{order.total}</div>
+                                <div className="text-xs text-gray-500 mb-1">{order.status} | {order.paymentMethod}</div>
+                                <div className="text-xs text-gray-400">{order.createdAt?.toDate ? order.createdAt.toDate().toLocaleString() : String(order.createdAt)}</div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
             <button
                 className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 font-semibold mt-6"
                 onClick={async () => {

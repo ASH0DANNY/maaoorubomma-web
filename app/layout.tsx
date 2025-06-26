@@ -9,6 +9,7 @@ import { Navbar } from "./components/Navbar";
 import { LocationProvider } from "./context/LocationContext";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { WishlistProvider } from "./context/WishlistContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,13 +28,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <CartProvider>
-            <LocationProvider>
-              <Navbar />
-              <main style={{ padding: "20px" }}>{children}</main>
-              <Footer />
-            </LocationProvider>
-          </CartProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <LocationProvider>
+                <Navbar />
+                <main style={{ padding: "20px" }}>{children}</main>
+                <Footer />
+              </LocationProvider>
+            </CartProvider>
+          </WishlistProvider>
         </AuthProvider>
       </body>
     </html>

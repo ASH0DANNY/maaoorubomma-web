@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useWishlist } from "../context/WishlistContext";
 import type { Product } from "../types/product";
 
 interface ProductCardProps {
@@ -12,6 +13,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   isGridView = true,
 }) => {
+  const { addItem, items, removeItem } = useWishlist();
+  const isWishlisted = items.some((i) => i.productId === product.id);
+
   // Format price using Intl
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-IN", {
@@ -23,7 +27,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow ${isGridView ? "p-4" : "p-4 flex gap-4"
+      className={`bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow relative ${isGridView ? "p-4" : "p-4 flex gap-4"
         }`}
     >
       <Link
@@ -37,7 +41,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }`}
         />
       </Link>
-
+      <button
+        className={`absolute top-2 right-2 z-10 p-1 rounded-full ${isWishlisted ? "bg-red-100 text-red-500" : "bg-gray-100 text-gray-400"}`}
+        title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
+        onClick={() =>
+          isWishlisted
+            ? removeItem(product.id)
+            : addItem({
+              productId: product.id,
+              name: product.name,
+              image: product.images[0],
+              slug: product.slug,
+              price: product.price,
+              addedAt: new Date().toISOString(),
+            })
+        }
+      >
+        <FavoriteBorderOutlinedIcon />
+      </button>
       <div className={`${isGridView ? "mt-4" : "flex-1"}`}>
         <Link href={`/product/${product.slug}`}>
           <h3
@@ -47,7 +68,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {product.name}
           </h3>
         </Link>
-
         <div className="flex items-center gap-2 mt-1">
           <div className="flex items-center">
             {[...Array(5)].map((_, idx) => (
@@ -66,36 +86,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </span>
           </div>
         </div>
-
         <div className="mt-2">
           <span className="text-xl font-semibold text-gray-900">
-            {formatPrice(product.pricing.price)}
+            {formatPrice(product.price)}
           </span>
-          {product.pricing.originalPrice && (
+          {product.originalPrice && (
             <>
               <span className="ml-2 text-sm text-gray-500 line-through">
-                {formatPrice(product.pricing.originalPrice)}
+                {formatPrice(product.originalPrice)}
               </span>
               <span className="ml-2 text-sm text-green-600">
                 {Math.round(
-                  (1 - product.pricing.price / product.pricing.originalPrice) *
-                  100
-                )}
-                % OFF
+                  (1 - product.price / product.originalPrice) * 100
+                )}% OFF
               </span>
             </>
           )}
-        </div>
-
-        <div
-          className={`flex items-center gap-2 ${isGridView ? "mt-4" : "mt-2"}`}
-        >
-          <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-            Add to Cart
-          </button>
-          <button className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <FavoriteBorderOutlinedIcon className="h-5 w-5 text-gray-600" />
-          </button>
         </div>
       </div>
     </div>
