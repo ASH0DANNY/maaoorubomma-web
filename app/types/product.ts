@@ -92,74 +92,40 @@ export interface Product {
     id: string;
     name: string;
     slug: string;
-    sku: string;
     description: string;
-    shortDescription?: string;
+    shortDescription: string;
+    price: number;
+    originalPrice?: number;
 
     // Media
     images: string[];
-    videos?: string[];
-    thumbnail?: string;
-
-    // Pricing
-    pricing: ProductPricing;
 
     // Variants
     colors?: ProductColor[];
     sizes?: ProductSize[];
-    variants?: ProductVariant[]; // For complex variants
 
     // Inventory
-    inventory: ProductInventory;
+    inventory: {
+        available: number;
+        total: number;
+    };
 
     // Classification
-    category: ProductCategory;
-    subCategory?: ProductCategory;
-    brand: ProductBrand;
-    tags?: string[];
+    categoryId: string;
+    subCategoryId?: string;
 
     // Product Details
-    material?: string;
-    features: string[];
     specifications: ProductSpecifications;
-
-    // Physical Properties
-    weight: ProductWeight;
-    dimensions: ProductDimensions;
+    features: string[];
 
     // Reviews and Ratings
-    rating: number; // Average rating
+    rating: number;
     reviewCount: number;
     reviews?: ProductReview[];
 
-    // Status and Visibility
-    status: "active" | "inactive" | "draft" | "discontinued";
-    featured: boolean;
-    newProduct: boolean;
-    bestSeller: boolean;
-
-    // Shipping
-    shipping: ProductShipping;
-
-    // SEO
-    seo?: ProductSEO;
-
-    // Timestamps
-    createdAt: Date;
-    updatedAt: Date;
-    publishedAt?: Date;
-
-    // Additional Properties
-    origin?: string; // Country/region of origin
-    artisan?: string; // For handcrafted items
-    careInstructions?: string[];
-    warranty?: string;
-    returnPolicy?: string;
-
-    // Related Products
-    relatedProducts?: string[]; // Product IDs
-    crossSellProducts?: string[]; // Product IDs
-    upSellProducts?: string[]; // Product IDs
+    // Physical Properties
+    dimensions?: ProductDimensions;
+    weight?: ProductWeight;
 }
 
 export interface ProductVariant {
@@ -243,65 +209,26 @@ export const createEmptyProduct = (): Partial<Product> => ({
     id: "",
     name: "",
     slug: "",
-    sku: "",
     description: "",
+    shortDescription: "",
+    price: 0,
     images: [],
-    pricing: {
-        price: 0,
-        currency: "INR",
-        taxIncluded: true,
-    },
     inventory: {
-        inStock: 0,
-        reserved: 0,
         available: 0,
-        lowStockThreshold: 5,
+        total: 0,
     },
-    category: {
-        id: "",
-        name: "",
-        path: "",
-    },
-    brand: {
-        id: "",
-        name: "",
-    },
+    categoryId: "",
     features: [],
     specifications: {},
-    weight: {
-        value: 0,
-        unit: "g",
-    },
-    dimensions: {
-        length: 0,
-        width: 0,
-        height: 0,
-        unit: "cm",
-    },
     rating: 0,
     reviewCount: 0,
-    status: "draft",
-    featured: false,
-    newProduct: false,
-    bestSeller: false,
-    shipping: {
-        weight: { value: 0, unit: "g" },
-        dimensions: { length: 0, width: 0, height: 0, unit: "cm" },
-        freeShipping: false,
-        expeditedShipping: false,
-    },
-    createdAt: new Date(),
-    updatedAt: new Date(),
 });
 
 export const getProductAvailability = (
     product: Product
 ): ProductAvailability => {
     if (product.inventory.available <= 0) {
-        return product.status === "discontinued" ? "discontinued" : "out_of_stock";
-    }
-    if (product.inventory.available <= product.inventory.lowStockThreshold) {
-        return "low_stock";
+        return "out_of_stock";
     }
     return "in_stock";
 };

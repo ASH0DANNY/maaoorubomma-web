@@ -7,6 +7,8 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { LocationProvider } from "./context/LocationContext";
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +26,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <LocationProvider>
-          <Navbar />
-          <main style={{ padding: "20px" }}>{children}</main>
-          <Footer />
-        </LocationProvider>
+        <AuthProvider>
+          <CartProvider>
+            <LocationProvider>
+              <Navbar />
+              <main style={{ padding: "20px" }}>{children}</main>
+              <Footer />
+            </LocationProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

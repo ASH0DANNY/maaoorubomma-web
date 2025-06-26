@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Star, Heart, Share2, ShoppingCart, Plus, Minus, Truck, Shield, RotateCcw, Award } from "lucide-react";
 import type { Product } from "../../types/product";
+import { useCart } from "../../context/CartContext";
 
 interface ProductDisplayPageProps {
   product: Product;
 }
 
 const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
+  const router = useRouter();
+  const { addItem } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
@@ -17,13 +21,19 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
   const [selectedSize, setSelectedSize] = useState("");
 
   const handleAddToCart = () => {
-    // Implement cart functionality
-    console.log("Added to cart:", {
-      product,
+    addItem({
+      productId: product.id,
+      name: product.name,
+      price: product.price,
       quantity,
-      color: selectedColor,
-      size: selectedSize,
+      color: selectedColor || undefined,
+      size: selectedSize || undefined,
+      image: product.images[0],
+      slug: product.slug
     });
+
+    // Navigate to cart page
+    router.push('/cart');
   };
 
   const formatPrice = (price: number) => {
@@ -102,19 +112,18 @@ const ProductDisplayPage = ({ product }: ProductDisplayPageProps) => {
                 {/* Price */}
                 <div className="flex items-baseline space-x-3">
                   <span className="text-3xl font-bold text-gray-900">
-                    {formatPrice(product.pricing.price)}
+                    {formatPrice(product.price)}
                   </span>
-                  {product.pricing.originalPrice && (
+                  {product.originalPrice && (
                     <span className="text-lg text-gray-500 line-through">
-                      {formatPrice(product.pricing.originalPrice)}
+                      {formatPrice(product.originalPrice)}
                     </span>
                   )}
-                  {product.pricing.originalPrice && (
+                  {product.originalPrice && (
                     <span className="text-sm text-green-600 font-medium">
                       {Math.round(
-                        ((product.pricing.originalPrice -
-                          product.pricing.price) /
-                          product.pricing.originalPrice) *
+                        ((product.originalPrice - product.price) /
+                          product.originalPrice) *
                         100
                       )}
                       % OFF

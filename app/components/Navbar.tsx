@@ -16,9 +16,11 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { LocationSelector } from "./LocationSelector";
 import { MaaoorubommaLogoBase64 } from "../utils/Base64";
 import Link from "next/link";
+import { useCart } from "../context/CartContext";
 
 export const Navbar = () => {
   const router = useRouter();
+  const { itemCount } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
@@ -174,9 +176,11 @@ export const Navbar = () => {
               className="relative p-1 lg:p-2 text-black hover:text-primary"
             >
               <ShoppingCartOutlinedIcon className="h-6 w-6" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
-              </span>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
