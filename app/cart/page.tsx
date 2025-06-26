@@ -115,19 +115,19 @@ export default function CartPage() {
                         </div>
 
                         {!user ? (
-                          <Link
-                            href="/auth/signin"
-                            className="w-full block bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 text-center font-semibold"
-                          >
-                            Sign in to Checkout
-                          </Link>
+                            <Link
+                                href="/auth/signin"
+                                className="w-full block bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 text-center font-semibold"
+                            >
+                                Sign in to Checkout
+                            </Link>
                         ) : (
-                          <button
-                            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700"
-                            onClick={() => alert('Checkout functionality coming soon!')}
-                          >
-                            Proceed to Checkout
-                          </button>
+                            <Link
+                                href="/payment"
+                                className="w-full block bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 text-center font-semibold"
+                            >
+                                Proceed to Checkout
+                            </Link>
                         )}
                     </div>
                 </div>
