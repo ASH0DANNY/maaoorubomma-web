@@ -3,7 +3,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
-export default function ProfilePage() {
+export default function AccountPage() {
     const { user, loading, signOutUser } = useAuth();
     const router = useRouter();
 
@@ -16,7 +16,7 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded shadow">
-            <h2 className="text-2xl font-bold mb-4">Profile</h2>
+            <h2 className="text-2xl font-bold mb-4">Account</h2>
             <div className="mb-4">
                 <div className="font-medium">Name:</div>
                 <div>{user.displayName || "-"}</div>

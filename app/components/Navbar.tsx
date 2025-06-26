@@ -17,10 +17,12 @@ import { LocationSelector } from "./LocationSelector";
 import { MaaoorubommaLogoBase64 } from "../utils/Base64";
 import Link from "next/link";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 export const Navbar = () => {
   const router = useRouter();
   const { itemCount } = useCart();
+  const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSticky, setIsSticky] = useState(false);
@@ -166,8 +168,8 @@ export const Navbar = () => {
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
             </Link>
             <Link
-              href="/account"
-              className="p-1 lg:p-2 text-black hover:text-primary hidden lg:block"
+              href={user ? "/account" : "/auth/signin"}
+              className="p-1 lg:p-2 text-black hover:text-primary"
             >
               <PersonOutlineOutlinedIcon className="h-6 w-6" />
             </Link>
@@ -410,12 +412,12 @@ export const Navbar = () => {
               {/* Menu Footer - User Actions */}
               <div className="border-t border-gray-200 p-4 space-y-3">
                 <Link
-                  href="/account"
+                  href={user ? "/account" : "/auth/signin"}
                   onClick={closeMobileMenu}
                   className="flex items-center px-2 py-2 text-base text-gray-700 hover:bg-gray-50 rounded-md"
                 >
                   <PersonOutlineOutlinedIcon className="h-5 w-5 mr-3 text-gray-400" />
-                  Login / Register
+                  {user ? "Account" : "Login / Register"}
                 </Link>
                 <Link
                   href="/track-order"
