@@ -3,6 +3,7 @@
 import { useWishlist } from "../context/WishlistContext";
 import Link from "next/link";
 import Image from "next/image";
+import { EmptyWishlist } from "../components/EmptyStateGraphics";
 
 export default function WishlistPage() {
     const { items, removeItem, clearWishlist } = useWishlist();
@@ -11,7 +12,10 @@ export default function WishlistPage() {
         <div className="max-w-2xl mx-auto mt-12 bg-white p-8 rounded shadow">
             <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
             {items.length === 0 ? (
-                <div className="text-gray-500">Your wishlist is empty.</div>
+
+                // <div className="text-gray-500">Your wishlist is empty.</div>
+                <EmptyWishlist size="xl" />
+
             ) : (
                 <>
                     <ul className="space-y-4 mb-6">

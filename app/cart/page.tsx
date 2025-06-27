@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/app/context/CartContext';
+import { EmptyCart } from '../components/EmptyStateGraphics';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, itemCount } = useCart();
@@ -12,7 +13,8 @@ export default function CartPage() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
         <div className="text-center py-8">
-          <p className="text-gray-600 mb-4">Your cart is empty</p>
+          {/* <p className="text-gray-600 mb-4">Your cart is empty</p> */}
+          <EmptyCart size="3xl" className="bg-white rounded-xl" />
           <Link
             href="/"
             className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
