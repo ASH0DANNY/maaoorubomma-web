@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import type { WishlistItem } from "../types/wishlist";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { saveWishlistToDb, getWishlistFromDb } from "../utils/wishlistDb";
+import { useAuth } from "./AuthContext";
 
 interface WishlistContextType {
-    items: WishlistItem[];
-    addItem: (item: WishlistItem) => void;
+    items: string[];
+    addItem: (productId: string) => void;
     removeItem: (productId: string) => void;
     clearWishlist: () => void;
 }
@@ -13,32 +14,69 @@ interface WishlistContextType {
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-    const [items, setItems] = useState<WishlistItem[]>([]);
+    const [ids, setIds] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
+    const hasMergedLocal = useRef(false);
 
+    // Load wishlist IDs from Firestore or localStorage on mount or user change
     useEffect(() => {
-        const saved = localStorage.getItem("wishlist");
-        if (saved) setItems(JSON.parse(saved));
-    }, []);
+        async function loadWishlist() {
+            setLoading(true);
+            if (user) {
+                const dbIds = await getWishlistFromDb(user.uid); // now returns string[]
+                // Merge localStorage wishlist on first login
+                if (!hasMergedLocal.current) {
+                    const local = localStorage.getItem("wishlist");
+                    if (local) {
+                        const localIds: string[] = JSON.parse(local);
+                        // Merge only new items
+                        const merged: string[] = Array.from(new Set([...(dbIds || []), ...localIds]));
+                        setIds(merged);
+                        await saveWishlistToDb(user.uid, merged);
+                        localStorage.removeItem("wishlist");
+                        hasMergedLocal.current = true;
+                        setLoading(false);
+                        return;
+                    }
+                }
+                setIds(dbIds || []);
+            } else {
+                const saved = localStorage.getItem("wishlist");
+                setIds(saved ? JSON.parse(saved) : []);
+            }
+            setLoading(false);
+        }
+        loadWishlist();
+        // eslint-disable-next-line
+    }, [user]);
 
+    // Save wishlist IDs to Firestore or localStorage whenever it changes (but not during initial load)
     useEffect(() => {
-        localStorage.setItem("wishlist", JSON.stringify(items));
-    }, [items]);
+        if (loading) return;
+        if (user) {
+            saveWishlistToDb(user.uid, ids);
+        } else {
+            localStorage.setItem("wishlist", JSON.stringify(ids));
+        }
+    }, [ids, user, loading]);
 
-    const addItem = (item: WishlistItem) => {
-        setItems((prev) => {
-            if (prev.some((i) => i.productId === item.productId)) return prev;
-            return [...prev, item];
-        });
+    const addItem = (productId: string) => {
+        setIds((prev) => (prev.includes(productId) ? prev : [...prev, productId]));
     };
 
     const removeItem = (productId: string) => {
-        setItems((prev) => prev.filter((i) => i.productId !== productId));
+        setIds((prev) => prev.filter((id) => id !== productId));
     };
 
-    const clearWishlist = () => setItems([]);
+    const clearWishlist = () => setIds([]);
+
+    if (loading) {
+        return <div className="w-full text-center py-8 text-gray-500">Loading wishlist...</div>;
+    }
 
     return (
-        <WishlistContext.Provider value={{ items, addItem, removeItem, clearWishlist }}>
+        <WishlistContext.Provider value={{ items: ids, addItem, removeItem, clearWishlist }}>
             {children}
         </WishlistContext.Provider>
     );

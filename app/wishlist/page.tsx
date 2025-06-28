@@ -1,44 +1,52 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useWishlist } from "../context/WishlistContext";
+import { ProductCard } from "../components/ProductCard";
+import type { Product } from "../types/product";
 import Link from "next/link";
-import Image from "next/image";
 import { EmptyWishlist } from "../components/EmptyStateGraphics";
 
 export default function WishlistPage() {
-    const { items, removeItem, clearWishlist } = useWishlist();
+    const { items: wishlistIds, clearWishlist } = useWishlist();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchProducts() {
+            setLoading(true);
+            if (wishlistIds.length > 0) {
+                const { getProductsByIds } = await import("../utils/productDb");
+                const prods = await getProductsByIds(wishlistIds);
+                // Debug log
+                console.log("Wishlist IDs:", wishlistIds);
+                console.log("Fetched products:", prods);
+                setProducts(prods);
+            } else {
+                setProducts([]);
+            }
+            setLoading(false);
+        }
+        fetchProducts();
+    }, [wishlistIds]);
 
     return (
-        <div className="max-w-2xl mx-auto mt-12 bg-white p-8 rounded shadow">
+        <div className="max-w-7xl mx-auto mt-12 p-4">
             <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
-            {items.length === 0 ? (
+            {loading ? (
+                <div className="text-gray-500">Loading...</div>
+            ) : products.length === 0 ? (
 
                 // <div className="text-gray-500">Your wishlist is empty.</div>
                 <EmptyWishlist size="xl" />
 
             ) : (
                 <>
-                    <ul className="space-y-4 mb-6">
-                        {items.map((item) => (
-                            <li key={item.productId} className="flex items-center gap-4 border-b pb-3">
-                                <div className="relative w-16 h-16">
-                                    <Image src={item.image} alt={item.name} fill className="object-cover rounded" />
-                                </div>
-                                <div className="flex-1">
-                                    <Link href={`/product/${item.slug}`} className="font-semibold hover:text-blue-600">
-                                        {item.name}
-                                    </Link>
-                                    <div className="text-sm text-gray-600">₹{item.price}</div>
-                                </div>
-                                <button
-                                    onClick={() => removeItem(item.productId)}
-                                    className="text-red-600 hover:text-red-800 text-xs"
-                                >
-                                    Remove
-                                </button>
-                            </li>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} isGridView={true} />
                         ))}
-                    </ul>
+                    </div>
                     <button
                         onClick={clearWishlist}
                         className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 font-semibold"
