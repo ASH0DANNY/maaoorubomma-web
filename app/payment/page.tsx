@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { db } from "../firebase";
-import { doc, updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import { saveOrderToDb } from "../utils/ordersDb";
 import type { CartItem } from "../types/cart";
 
 const paymentMethods = [
@@ -29,12 +28,16 @@ export default function PaymentPage() {
     const [paying, setPaying] = useState(false);
     const [error, setError] = useState("");
 
-    if (!user) {
-        router.push("/auth/signin");
-        return null;
-    }
-    if (!items.length) {
-        router.push("/cart");
+    // Redirects moved to useEffect to avoid setState in render
+    useEffect(() => {
+        if (!user) {
+            router.push("/auth/signin");
+        } else if (!items.length) {
+            router.push("/cart");
+        }
+    }, [user, items.length, router]);
+
+    if (!user || !items.length) {
         return null;
     }
 
@@ -42,7 +45,6 @@ export default function PaymentPage() {
         setPaying(true);
         setError("");
         try {
-            // Only save allowed fields for each item, remove undefined/null
             const sanitizedItems = items.map((item) => cleanObject({
                 productId: item.productId,
                 name: item.name,
@@ -53,15 +55,13 @@ export default function PaymentPage() {
                 size: item.size,
                 slug: item.slug,
             }));
-            await updateDoc(doc(db, "users", user.uid), {
-                orders: arrayUnion(cleanObject({
-                    items: sanitizedItems,
-                    total,
-                    paymentMethod: method,
-                    status: "completed",
-                    createdAt: Timestamp.now(),
-                })),
-            });
+            await saveOrderToDb(user.uid, cleanObject({
+                items: sanitizedItems,
+                total,
+                paymentMethod: method,
+                status: "completed",
+                createdAt: undefined, // let saveOrderToDb add timestamp
+            }));
             clearCart();
             router.push("/account?order=success");
         } catch (e: any) {

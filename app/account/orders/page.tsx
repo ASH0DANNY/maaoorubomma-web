@@ -1,10 +1,9 @@
 "use client";
 
-import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
-import { db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import type { UserOrder } from "../../types/user";
+import { UserOrder } from "../../types/user";
+import { useAuth } from "../../context/AuthContext";
+import { getOrdersFromDb } from "../../utils/ordersDb";
 
 export default function OrdersPage() {
     const { user } = useAuth();
@@ -13,13 +12,18 @@ export default function OrdersPage() {
 
     useEffect(() => {
         async function fetchOrders() {
-            if (!user) return;
-            const ref = doc(db, "users", user.uid);
-            const snap = await getDoc(ref);
-            if (snap.exists() && snap.data().orders) {
-                setOrders(snap.data().orders);
+            if (!user) {
+                setLoading(false);
+                return;
             }
-            setLoading(false);
+            try {
+                const userOrders = await getOrdersFromDb(user.uid);
+                setOrders(userOrders);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            } finally {
+                setLoading(false);
+            }
         }
         fetchOrders();
     }, [user]);

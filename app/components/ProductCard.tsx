@@ -15,6 +15,7 @@ interface ProductCardProps {
   isGridView?: boolean;
   onAddToCart?: (product: Product) => void;
   showQuickActions?: boolean;
+  linkToDetails?: boolean;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -23,6 +24,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   isGridView = true,
   onAddToCart,
   showQuickActions = true,
+  linkToDetails = false,
 }) => {
   const [product, setProduct] = useState<Product | undefined>(initialProduct);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -41,7 +43,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   if (!product) return null;
 
-  const isWishlisted = items.some(item => item === product.id);
+  // For new wishlist context, items is Product[]
+  const isWishlisted = items.some((item: Product) => item.id === product.id);
 
   // Format price using Intl
   const formatPrice = (price: number) => {
@@ -55,16 +58,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   // Helper to get price from correct property
   const getPrice = () => product?.priceing?.price ?? 0;
-  const getOriginalPrice = () => product?.priceing?.originalPrice;
+  const getOriginalPrice = () => product?.priceing?.originalPrice ?? undefined;
 
   // Calculate discount percentage
   const discountPercentage = getOriginalPrice()
-    ? Math.round((1 - getPrice() / getOriginalPrice()!) * 100)
+    ? Math.round((1 - getPrice() / (getOriginalPrice() || 1)) * 100)
     : 0;
 
   // Check if product is in stock
-  const isInStock = product.inventory.available > 0;
-  const isLowStock = product.inventory.available > 0 && product.inventory.available <= 5;
+  const isInStock = product?.inventory?.available > 0;
+  const isLowStock = product?.inventory?.available > 0 && product?.inventory?.available <= 5;
+
+  // Defensive fallback for images
+  const productImage = Array.isArray(product.images) && product.images.length > 0
+    ? product.images[0]
+    : "https://via.placeholder.com/500x500?text=No+Image";
+
+  // Defensive fallback for reviewCount
+  const reviewCount = typeof product.reviewCount === "number" ? product.reviewCount : 0;
+
+  // Defensive fallback for rating
+  const rating = typeof product.rating === "number" ? product.rating : 0;
+
+  // Defensive fallback for name
+  const productName = product.name || "Product";
+
+  // Defensive fallback for slug
+  const productSlug = product.slug || "";
+
+  // Defensive fallback for features
+  const featured = !!product.featured;
+  const newProduct = !!product.newProduct;
+  const bestSeller = !!product.bestSeller;
 
   // Handle wishlist toggle
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -74,7 +99,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     if (isWishlisted) {
       removeItem(product.id);
     } else {
-      addItem(product.id);
+      addItem(product);
     }
   };
 
@@ -89,8 +114,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   // Render star rating
   const renderStars = () => {
-    const fullStars = Math.floor(product.rating);
-    const hasHalfStar = product.rating % 1 !== 0;
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
     return (
@@ -114,26 +139,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     );
   };
 
-  return (
+  // If linkToDetails, wrap the card in a Link
+  const cardContent = (
     <div
-      className={`group bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-300 relative overflow-hidden ${isGridView ? "p-3" : "p-3 flex gap-3"
-        }`}
+      className={`group bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-300 relative overflow-hidden ${isGridView ? "p-3" : "p-3 flex gap-3"}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Product Badges */}
       <div className="absolute top-2 left-2 z-20 flex flex-col gap-1">
-        {product.featured && (
+        {featured && (
           <span className="bg-purple-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">
             Featured
           </span>
         )}
-        {product.newProduct && (
+        {newProduct && (
           <span className="bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">
             New
           </span>
         )}
-        {product.bestSeller && (
+        {bestSeller && (
           <span className="bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded font-medium">
             Best Seller
           </span>
@@ -173,14 +198,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Image */}
       <Link
-        href={`/product/${product.slug}`}
+        href={`/product/${productSlug}`}
         className={`relative overflow-hidden rounded ${isGridView ? "block" : "flex-shrink-0"
           }`}
       >
         <div className={`relative ${isGridView ? "aspect-square" : "w-20 h-20"}`}>
           <img
-            src={product.images[0]}
-            alt={product.name}
+            src={productImage}
+            alt={productName}
             className={`w-full h-full object-cover transition-all duration-300 ${!imageLoaded ? "opacity-0 scale-105" : "opacity-100 scale-100"
               } ${isHovered && isGridView ? "scale-105" : ""
               }`}
@@ -195,10 +220,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Details */}
       <div className={`${isGridView ? "mt-3" : "flex-1 min-w-0"}`}>
-        <Link href={`/product/${product.slug}`} className="block">
+        <Link href={`/product/${productSlug}`} className="block">
           <h3 className={`font-medium text-gray-900 hover:text-blue-600 transition-colors line-clamp-2 ${isGridView ? "text-sm leading-tight" : "text-sm"
             }`}>
-            {product.name}
+            {productName}
           </h3>
         </Link>
 
@@ -206,7 +231,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center gap-1 mt-1">
           {renderStars()}
           <span className="text-xs text-gray-600">
-            ({product.reviewCount})
+            ({reviewCount})
           </span>
         </div>
 
@@ -226,7 +251,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
           {discountPercentage > 0 && (
             <span className="text-xs text-green-600 font-medium">
-              Save {formatPrice(getOriginalPrice()! - getPrice())}
+              Save {formatPrice((getOriginalPrice() || 0) - getPrice())}
             </span>
           )}
         </div>
@@ -236,7 +261,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className="mt-1">
             {isInStock ? (
               <span className="text-xs text-green-600 font-medium">
-                {isLowStock ? `Only ${product.inventory.available} left` : "In Stock"}
+                {isLowStock ? `Only ${product?.inventory?.available} left` : "In Stock"}
               </span>
             ) : (
               <span className="text-xs text-red-600 font-medium">
@@ -281,4 +306,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
     </div>
   );
+
+  if (linkToDetails && productSlug) {
+    return (
+      <Link href={`/product/${productSlug}`} className="block">
+        {cardContent}
+      </Link>
+    );
+  }
+  return cardContent;
 };

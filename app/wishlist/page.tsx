@@ -1,34 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useWishlist } from "../context/WishlistContext";
 import { ProductCard } from "../components/ProductCard";
-import type { Product } from "../types/product";
-import Link from "next/link";
 import { EmptyWishlist } from "../components/EmptyStateGraphics";
 
 export default function WishlistPage() {
-    const { items: wishlistIds, clearWishlist } = useWishlist();
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function fetchProducts() {
-            setLoading(true);
-            if (wishlistIds.length > 0) {
-                const { getProductsByIds } = await import("../utils/productDb");
-                const prods = await getProductsByIds(wishlistIds);
-                // Debug log
-                console.log("Wishlist IDs:", wishlistIds);
-                console.log("Fetched products:", prods);
-                setProducts(prods);
-            } else {
-                setProducts([]);
-            }
-            setLoading(false);
-        }
-        fetchProducts();
-    }, [wishlistIds]);
+    const { items: products, clearWishlist } = useWishlist();
+    const [loading, setLoading] = useState(false); // No async fetch needed now
 
     return (
         <div className="max-w-7xl mx-auto mt-12 p-4">
@@ -36,15 +15,12 @@ export default function WishlistPage() {
             {loading ? (
                 <div className="text-gray-500">Loading...</div>
             ) : products.length === 0 ? (
-
-                // <div className="text-gray-500">Your wishlist is empty.</div>
                 <EmptyWishlist size="xl" />
-
             ) : (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
                         {products.map((product) => (
-                            <ProductCard key={product.id} product={product} isGridView={true} />
+                            <ProductCard key={product.id} product={product} isGridView={true} linkToDetails />
                         ))}
                     </div>
                     <button
