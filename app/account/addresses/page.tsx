@@ -19,6 +19,7 @@ export default function AddressesPage() {
         country: "India",
         pincode: ""
     });
+    const [formError, setFormError] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchAddresses() {
@@ -35,7 +36,17 @@ export default function AddressesPage() {
 
     const handleAddNewAddress = async (e: React.FormEvent) => {
         e.preventDefault();
+        setFormError(null);
         if (!user) return;
+        // Validation
+        if (!newAddress.houseNumber.trim() || !newAddress.area.trim() || !newAddress.city.trim() || !newAddress.state.trim() || !newAddress.pincode.trim()) {
+            setFormError("All fields are required.");
+            return;
+        }
+        if (!/^[1-9][0-9]{5}$/.test(newAddress.pincode)) {
+            setFormError("Please enter a valid 6-digit pincode.");
+            return;
+        }
 
         const ref = doc(db, "users", user.uid);
         await setDoc(ref, {
@@ -73,6 +84,9 @@ export default function AddressesPage() {
             {isAddingNew && (
                 <div className="mb-8 border rounded-lg p-4">
                     <h3 className="font-medium mb-4">Add New Address</h3>
+                    {formError && (
+                        <div className="mb-2 text-red-600 text-sm font-medium">{formError}</div>
+                    )}
                     <form onSubmit={handleAddNewAddress} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input

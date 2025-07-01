@@ -11,7 +11,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
     const menuItems = [
         { name: 'All Orders', href: '/account/orders', current: pathname === '/account/orders' },
         { name: 'Saved Addresses', href: '/account/addresses', current: pathname === '/account/addresses' },
-        { name: 'My Wishlist', href: '/wishlist', current: pathname === '/wishlist' },
+        { name: 'My Wishlist', href: '/account/wishlist', current: pathname === '/account/wishlist' },
         { name: 'Contact us', href: '/contact', current: pathname === '/contact' },
         { name: 'Wallet & eGift Cards', href: '/account/wallet', current: pathname === '/account/wallet' },
     ];

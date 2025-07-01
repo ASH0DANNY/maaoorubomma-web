@@ -52,7 +52,7 @@ export default function AccountPage() {
                 <div className="border rounded-lg p-4">
                     <h3 className="font-medium mb-4">My Wishlist</h3>
                     <button
-                        onClick={() => router.push('/wishlist')}
+                        onClick={() => router.push('/account/wishlist')}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                     >
                         View Wishlist

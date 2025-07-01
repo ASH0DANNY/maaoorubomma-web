@@ -1,49 +1,65 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { useLocation, popularLocations } from '../context/LocationContext';
+import { useLocation } from '../context/LocationContext';
+import { useAuth } from '../context/AuthContext';
+import type { Address } from '../types/address';
 
 export const LocationSelector = () => {
-    const { currentLocation, setCurrentLocation, isLocationPopupOpen, setIsLocationPopupOpen } = useLocation();
+    const router = useRouter();
+    const { user } = useAuth();
+    const {
+        currentLocation,
+        setCurrentLocation,
+        isLocationPopupOpen,
+        setIsLocationPopupOpen,
+        userAddresses,
+        selectedAddress,
+        setSelectedAddress
+    } = useLocation();
     const [postalCode, setPostalCode] = useState('');
 
     const handleLocationSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (postalCode.trim()) {
-            setCurrentLocation(`${postalCode}`);
-            setIsLocationPopupOpen(false);
-            setPostalCode('');
+        if (!user) {
+            router.push('/auth/signin?redirect=/account/addresses');
+            return;
         }
+        router.push('/account/addresses');
+        setIsLocationPopupOpen(false);
+    };
+
+    const handleSelectAddress = (address: Address) => {
+        setSelectedAddress(address);
+        setCurrentLocation(`${address.city} - ${address.postalCode || address.postalCode}`);
+        setIsLocationPopupOpen(false);
     };
 
     const handleDetectLocation = () => {
+        if (!user) {
+            router.push('/auth/signin?redirect=/account/addresses');
+            return;
+        }
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                () => {
+                (position) => {
                     // In a real app, you'd reverse geocode these coordinates
-                    setCurrentLocation('Current Location');
+                    // and create a new address
+                    router.push('/account/addresses');
                     setIsLocationPopupOpen(false);
                 },
                 (error) => {
                     console.error('Error detecting location:', error);
-                    alert('Unable to detect location. Please enter postal code manually.');
+                    alert('Unable to detect location. Please add address manually.');
                 }
             );
         } else {
             alert('Geolocation is not supported by this browser.');
         }
     };
-
-    const selectPopularLocation = (location: { name: string; code: string }) => {
-        setCurrentLocation(`${location.name} - ${location.code}`);
-        setIsLocationPopupOpen(false);
-    };
-
-    // Extract postal code from current location for display
-    const displayCode = currentLocation.includes('-') ?
-        currentLocation.split('-').pop()?.trim() || currentLocation :
-        currentLocation;
 
     return (
         <>
@@ -55,13 +71,12 @@ export const LocationSelector = () => {
                     <span className="text-xs text-gray-500 hidden lg:block">Deliver To</span>
                     <div className="flex items-center">
                         <LocationOnOutlinedIcon className="h-4 w-4 text-gray-500 mr-0 lg:mr-1" fontSize='small' />
-                        <span className="font-medium text-xs">{displayCode}</span>
+                        <span className="font-medium text-xs">{selectedAddress ? `${selectedAddress.city} ${selectedAddress.postalCode}` : currentLocation}</span>
                     </div>
                 </div>
                 <ArrowDropDownIcon className="h-4 w-4 text-gray-700 hidden lg:block" />
             </button>
 
-            {/* Location Popup Modal */}
             {isLocationPopupOpen && (
                 <div className="fixed inset-0 z-50 overflow-y-auto">
                     <div
@@ -75,12 +90,44 @@ export const LocationSelector = () => {
                                 <div className="text-center">
                                     <LocationOnOutlinedIcon className="mx-auto h-12 w-12 text-blue-600" />
                                     <h3 className="mt-2 text-lg font-medium leading-6 text-gray-900">
-                                        Choose your location
+                                        Choose your delivery location
                                     </h3>
                                     <p className="mt-1 text-sm text-gray-500">
-                                        Enter your postal code to see products available in your area
+                                        {user ? 'Select a delivery address or add a new one' : 'Sign in to select your delivery address'}
                                     </p>
                                 </div>
+
+                                {user && userAddresses.length > 0 && (
+                                    <div className="mt-4 space-y-2">
+                                        <h4 className="text-sm font-medium text-gray-900">Your Addresses</h4>
+                                        <div className="max-h-48 overflow-y-auto space-y-2">
+                                            {userAddresses.map((address: Address) => (
+                                                <button
+                                                    key={address.id || address.postalCode}
+                                                    onClick={() => handleSelectAddress(address)}
+                                                    className={`w-full text-left p-3 rounded-lg border ${selectedAddress?.id === address.id
+                                                            ? 'border-blue-500 bg-blue-50'
+                                                            : 'border-gray-200 hover:border-gray-300'
+                                                        }`}
+                                                >
+                                                    <div className="font-medium text-sm">{address.name || address.houseNumber}</div>
+                                                    <div className="text-xs text-gray-500 mt-1">
+                                                        {address.addressLine1 || address.addressLine1}
+                                                        {address.addressLine2 && `, ${address.addressLine2}`}
+                                                    </div>
+                                                    <div className="text-xs text-gray-500">
+                                                        {address.city}, {address.state} <span className="font-semibold">{address.postalCode}</span>
+                                                    </div>
+                                                    {address.isDefault && (
+                                                        <span className="mt-1 inline-block text-xs text-blue-600 font-medium">
+                                                            Default Address
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="mt-4">
                                     <button
@@ -88,69 +135,28 @@ export const LocationSelector = () => {
                                         className="w-full inline-flex justify-center items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                     >
                                         <MyLocationIcon className="h-4 w-4 mr-2" />
-                                        Detect my location
+                                        {user ? 'Add address using current location' : 'Sign in to use location'}
                                     </button>
-                                </div>
-
-                                <div className="mt-4 flex items-center">
-                                    <div className="flex-1 border-t border-gray-300"></div>
-                                    <span className="px-3 text-sm text-gray-500">or</span>
-                                    <div className="flex-1 border-t border-gray-300"></div>
                                 </div>
 
                                 <div className="mt-4">
-                                    <div>
-                                        <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
-                                            Postal Code
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="postalCode"
-                                            value={postalCode}
-                                            onChange={(e) => setPostalCode(e.target.value)}
-                                            placeholder="Enter postal code"
-                                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter') {
-                                                    handleLocationSubmit(e);
-                                                }
-                                            }}
-                                        />
-                                    </div>
                                     <button
-                                        type="button"
                                         onClick={handleLocationSubmit}
-                                        className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                        className="w-full inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                     >
-                                        Apply
+                                        {user ? 'Add New Address' : 'Sign in to add address'}
                                     </button>
                                 </div>
 
-                                <div className="mt-6">
-                                    <h4 className="text-sm font-medium text-gray-900 mb-3">Popular locations</h4>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        {popularLocations.map((location) => (
-                                            <button
-                                                key={location.code}
-                                                onClick={() => selectPopularLocation(location)}
-                                                className="text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border border-gray-200 hover:border-gray-300"
-                                            >
-                                                <div className="font-medium">{location.name}</div>
-                                                <div className="text-xs text-gray-500">{location.code}</div>
-                                            </button>
-                                        ))}
-                                    </div>
+                                <div className="mt-4">
+                                    <button
+                                        type="button"
+                                        className="w-full inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                        onClick={() => setIsLocationPopupOpen(false)}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div className="mt-5 sm:mt-6">
-                                <button
-                                    type="button"
-                                    className="w-full inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                    onClick={() => setIsLocationPopupOpen(false)}
-                                >
-                                    Cancel
-                                </button>
                             </div>
                         </div>
                     </div>

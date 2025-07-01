@@ -160,7 +160,7 @@ export const Navbar = () => {
               </div>
             </div>{" "}
             <Link
-              href="/wishlist"
+              href="/account/wishlist"
               className="p-1 lg:p-2 text-black hover:text-primary"
             >
               <FavoriteBorderOutlinedIcon className="h-6 w-6" />
